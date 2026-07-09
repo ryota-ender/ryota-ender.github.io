@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryota | 自己紹介</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --text: #1f2328;
+      --muted: #59636e;
+      --accent: #0969da;
+      --border: #e4e7eb;
+      --tag-bg: #eef4fb;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --text: #e6edf3;
+        --muted: #9198a1;
+        --accent: #4493f8;
+        --border: #30363d;
+        --tag-bg: #1c2a3a;
+      }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Hiragino Sans", "Yu Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+    header {
+      text-align: center;
+      padding: 40px 0 32px;
+    }
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      display: block;
+      margin: 0 auto 20px;
+    }
+    h1 {
+      font-size: 1.9rem;
+      letter-spacing: 0.02em;
+    }
+    .tagline {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+    h2 {
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    p + p { margin-top: 10px; }
+    ul { padding-left: 1.4em; }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+      padding: 0;
+    }
+    .tags li {
+      background: var(--tag-bg);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.9rem;
+    }
+    .links {
+      list-style: none;
+      padding: 0;
+    }
+    .links li + li { margin-top: 8px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <!-- GitHub のプロフィール画像を自動で表示します -->
+      <img class="avatar" src="https://github.com/ryota-ender.png" alt="プロフィール画像">
+      <h1>Ryota</h1>
+      <p class="tagline">ソフトウェア開発を学んでいます</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>はじめまして、Ryota です。プログラミングを学びながら、Web アプリなどの開発に取り組んでいます。</p>
+      <p>このページは GitHub Pages で公開している自己紹介ページです。</p>
+      <!-- ここに経歴や自己紹介文を自由に書き足してください -->
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <ul class="tags">
+        <li>Python</li>
+        <li>Flask</li>
+        <li>HTML / CSS</li>
+        <li>JavaScript</li>
+        <li>Git / GitHub</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <ul>
+        <li>準備中 — 作ったものをここで紹介予定です</li>
+        <!-- 例: <li><a href="https://github.com/ryota-ender/xxx">プロジェクト名</a> — 一言説明</li> -->
+      </ul>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <ul class="links">
+        <li>GitHub: <a href="https://github.com/ryota-ender">@ryota-ender</a></li>
+        <li>Email: <a href="mailto:ryota.akaba.0904@gmail.com">ryota.akaba.0904@gmail.com</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      &copy; 2026 Ryota — Built with GitHub Pages
+    </footer>
+
+  </div>
+</body>
+</html>
