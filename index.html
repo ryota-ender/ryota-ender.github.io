@@ -3,153 +3,498 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ryota | 自己紹介</title>
+  <title>Ryota | Portfolio</title>
+  <meta name="description" content="Ryota の自己紹介・ポートフォリオページ">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
   <style>
     :root {
-      --bg: #f7f7f5;
-      --card: #ffffff;
-      --text: #1f2328;
-      --muted: #59636e;
-      --accent: #0969da;
-      --border: #e4e7eb;
-      --tag-bg: #eef4fb;
+      --bg: #0e0b16;
+      --bg-2: #171327;
+      --border: rgba(255, 255, 255, 0.09);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text: #eceaf4;
+      --text-2: #a9a5bd;
+      --text-3: #767189;
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --grad: linear-gradient(135deg, #8b5cf6, #22d3ee);
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      --glow: 0 0 28px rgba(139, 92, 246, 0.35);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0d1117;
-        --card: #161b22;
-        --text: #e6edf3;
-        --muted: #9198a1;
-        --accent: #4493f8;
-        --border: #30363d;
-        --tag-bg: #1c2a3a;
-      }
-    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: "Hiragino Sans", "Yu Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: "Hiragino Sans", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
+      line-height: 1.85;
+      overflow-x: hidden;
     }
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 20px 80px;
-    }
-    header {
-      text-align: center;
-      padding: 40px 0 32px;
-    }
-    .avatar {
-      width: 112px;
-      height: 112px;
+
+    ::selection { background: rgba(139, 92, 246, 0.45); }
+
+    /* ---------- 背景（漂う光のブロブ） ---------- */
+    .blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .blob {
+      position: absolute;
       border-radius: 50%;
-      border: 3px solid var(--border);
-      display: block;
-      margin: 0 auto 20px;
+      filter: blur(90px);
+      opacity: 0.17;
+      animation: float 26s ease-in-out infinite alternate;
     }
-    h1 {
-      font-size: 1.9rem;
-      letter-spacing: 0.02em;
+    .blob.b1 { width: 55vmax; height: 55vmax; background: #8b5cf6; top: -22vmax; left: -14vmax; }
+    .blob.b2 { width: 48vmax; height: 48vmax; background: #0ea5b7; bottom: -20vmax; right: -12vmax; animation-delay: -9s; }
+    .blob.b3 { width: 34vmax; height: 34vmax; background: #e879a9; top: 42%; left: 58%; opacity: 0.10; animation-delay: -18s; }
+    @keyframes float {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(7vmax, 5vmax) scale(1.18); }
     }
-    .tagline {
-      color: var(--muted);
-      margin-top: 8px;
-      font-size: 1rem;
-    }
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-top: 24px;
-    }
-    h2 {
-      font-size: 1.15rem;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 22px; }
+
+    /* ---------- ナビ ---------- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(14, 11, 22, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
-    p + p { margin-top: 10px; }
-    ul { padding-left: 1.4em; }
-    .tags {
+    .nav .inner {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      list-style: none;
-      padding: 0;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 12px;
     }
-    .tags li {
-      background: var(--tag-bg);
-      color: var(--accent);
+    .nav .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      text-decoration: none;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 0.03em;
+    }
+    .nav ul { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav a.nav-link {
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 6px 14px;
       border-radius: 999px;
-      padding: 4px 14px;
-      font-size: 0.9rem;
+      transition: color 0.18s, background 0.18s;
     }
-    .links {
-      list-style: none;
-      padding: 0;
-    }
-    .links li + li { margin-top: 8px; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    footer {
+    .nav a.nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.07); }
+
+    /* ---------- ヒーロー ---------- */
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-top: 40px;
+      padding: 60px 0 40px;
+      position: relative;
+    }
+    .avatar-ring {
+      position: relative;
+      width: 132px;
+      height: 132px;
+      margin-bottom: 28px;
+      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .avatar-ring::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #8b5cf6, #22d3ee, #e879a9, #8b5cf6);
+      animation: spin 6s linear infinite;
+    }
+    .avatar-ring img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 4px solid var(--bg);
+      display: block;
+      object-fit: cover;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      animation: rise 0.8s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero h1 .grad {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero .tagline {
+      margin-top: 14px;
+      color: var(--text-2);
+      font-size: 1.02rem;
+      animation: rise 0.8s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    /* タイピング風カーソル */
+    .type-target { border-right: 2px solid var(--accent-2); padding-right: 3px; }
+
+    .hero .cta {
+      display: flex;
+      gap: 14px;
+      margin-top: 34px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: rise 0.8s 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .btn-grad { background: var(--grad); color: #fff; }
+    .btn-grad:hover { transform: translateY(-3px); box-shadow: var(--glow); }
+    .btn-ghost { border: 1px solid var(--border-strong); color: var(--text); background: rgba(255,255,255,0.04); }
+    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.09); }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-3);
+      font-size: 1.4rem;
+      animation: bob 1.8s ease-in-out infinite;
+      text-decoration: none;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translate(-50%, 0); }
+      50%      { transform: translate(-50%, 9px); }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- セクション共通 ---------- */
+    section.block { padding: 88px 0 20px; }
+    .sec-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .sec-title {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 30px;
+      position: relative;
+      display: inline-block;
+    }
+    .sec-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 46px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--grad);
+    }
+
+    /* スクロールで浮かび上がる */
+    .reveal { opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+    .reveal.shown { opacity: 1; transform: translateY(0); }
+
+    .card {
+      background: rgba(23, 19, 39, 0.82);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* ---------- About ---------- */
+    .about-card { padding: 30px 34px; font-size: 0.98rem; }
+    .about-card p + p { margin-top: 12px; }
+    .about-card .hl { color: var(--accent-2); font-weight: 700; }
+
+    /* ---------- Skills ---------- */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+    .skill {
+      padding: 20px 14px;
+      text-align: center;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .skill:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: var(--glow);
+    }
+    .skill .icon { font-size: 1.7rem; display: block; margin-bottom: 8px; }
+    .skill .name { font-weight: 700; font-size: 0.92rem; }
+    .skill .note { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
+
+    /* ---------- Works ---------- */
+    .work-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+      margin-bottom: 20px;
+    }
+    .work-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(34, 211, 238, 0.5);
+      box-shadow: var(--shadow), 0 0 28px rgba(34, 211, 238, 0.25);
+    }
+    .work-head {
+      padding: 26px 30px 20px;
+      background: linear-gradient(120deg, rgba(139, 92, 246, 0.2), rgba(34, 211, 238, 0.1));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .work-head .t { font-size: 1.25rem; font-weight: 800; }
+    .work-head .arrow { color: var(--accent-2); font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
+    .work-body { padding: 20px 30px 26px; }
+    .work-body p { color: var(--text-2); font-size: 0.92rem; margin-bottom: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+    .chips li {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      background: rgba(139, 92, 246, 0.13);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: 999px;
+      padding: 3px 12px;
+    }
+    .more-works { text-align: center; margin-top: 6px; }
+
+    /* ---------- Contact ---------- */
+    .contact-card { padding: 34px; text-align: center; }
+    .contact-card p { color: var(--text-2); margin-bottom: 22px; font-size: 0.94rem; }
+    .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+    /* ---------- フッター ---------- */
+    footer {
+      margin-top: 90px;
+      border-top: 1px solid var(--border);
+      padding: 26px 0;
+      text-align: center;
+      color: var(--text-3);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 560px) {
+      .nav ul { display: none; }
+      .about-card, .work-head, .work-body, .contact-card { padding-left: 20px; padding-right: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+      .type-target { border-right: none; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
 
-    <header>
-      <!-- GitHub のプロフィール画像を自動で表示します -->
-      <img class="avatar" src="https://github.com/ryota-ender.png" alt="プロフィール画像">
-      <h1>Ryota</h1>
-      <p class="tagline">ソフトウェア開発を学んでいます</p>
-    </header>
-
-    <section>
-      <h2>About Me</h2>
-      <p>はじめまして、Ryota です。プログラミングを学びながら、Web アプリなどの開発に取り組んでいます。</p>
-      <p>このページは GitHub Pages で公開している自己紹介ページです。</p>
-      <!-- ここに経歴や自己紹介文を自由に書き足してください -->
-    </section>
-
-    <section>
-      <h2>Skills</h2>
-      <ul class="tags">
-        <li>Python</li>
-        <li>Flask</li>
-        <li>HTML / CSS</li>
-        <li>JavaScript</li>
-        <li>Git / GitHub</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Projects</h2>
-      <ul>
-        <li>準備中 — 作ったものをここで紹介予定です</li>
-        <!-- 例: <li><a href="https://github.com/ryota-ender/xxx">プロジェクト名</a> — 一言説明</li> -->
-      </ul>
-    </section>
-
-    <section>
-      <h2>Links</h2>
-      <ul class="links">
-        <li>GitHub: <a href="https://github.com/ryota-ender">@ryota-ender</a></li>
-        <li>Email: <a href="mailto:ryota.akaba.0904@gmail.com">ryota.akaba.0904@gmail.com</a></li>
-      </ul>
-    </section>
-
-    <footer>
-      &copy; 2026 Ryota — Built with GitHub Pages
-    </footer>
-
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
   </div>
+
+  <nav class="nav">
+    <div class="container inner">
+      <a class="logo" href="#top">Ryota</a>
+      <ul>
+        <li><a class="nav-link" href="#about">About</a></li>
+        <li><a class="nav-link" href="#skills">Skills</a></li>
+        <li><a class="nav-link" href="#works">Works</a></li>
+        <li><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ================= Hero ================= -->
+  <header class="hero container" id="top">
+    <div class="avatar-ring">
+      <!-- GitHub のプロフィール画像を自動表示 -->
+      <img src="https://github.com/ryota-ender.png" alt="プロフィール画像">
+    </div>
+    <h1>Hi, I'm <span class="grad">Ryota</span></h1>
+    <p class="tagline"><span class="type-target" id="typeTarget"></span></p>
+    <div class="cta">
+      <a class="btn btn-grad" href="#works">作品を見る 🎧</a>
+      <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <a class="scroll-cue" href="#about" aria-label="下へスクロール">▾</a>
+  </header>
+
+  <main class="container">
+
+    <!-- ================= About ================= -->
+    <section class="block" id="about">
+      <div class="reveal">
+        <div class="sec-label">About</div>
+        <h2 class="sec-title">自己紹介</h2>
+      </div>
+      <div class="card about-card reveal">
+        <p>はじめまして、<span class="hl">Ryota</span> です。ソフトウェア開発を学びながら、Web アプリケーションの制作に取り組んでいます。</p>
+        <p>Java（Servlet / JSP）＋ MySQL でのサーバーサイド開発から、HTML / CSS / JavaScript でのフロントエンド実装まで、幅広く挑戦中です。</p>
+        <p>趣味はライブ・フェス参戦。「行きたいライブを管理したい」という自分の欲しいものを、そのままアプリにしています🎤</p>
+        <!-- ここに経歴などを自由に書き足してください -->
+      </div>
+    </section>
+
+    <!-- ================= Skills ================= -->
+    <section class="block" id="skills">
+      <div class="reveal">
+        <div class="sec-label">Skills</div>
+        <h2 class="sec-title">スキル</h2>
+      </div>
+      <div class="skill-grid">
+        <div class="card skill reveal"><span class="icon">☕</span><span class="name">Java</span><div class="note">Servlet / JSP</div></div>
+        <div class="card skill reveal"><span class="icon">🐬</span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div></div>
+        <div class="card skill reveal"><span class="icon">🌐</span><span class="name">HTML / CSS</span><div class="note">レスポンシブ対応</div></div>
+        <div class="card skill reveal"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS</div></div>
+        <div class="card skill reveal"><span class="icon">🐍</span><span class="name">Python</span><div class="note">Flask</div></div>
+        <div class="card skill reveal"><span class="icon">🔧</span><span class="name">Git / GitHub</span><div class="note">バージョン管理</div></div>
+      </div>
+    </section>
+
+    <!-- ================= Works ================= -->
+    <section class="block" id="works">
+      <div class="reveal">
+        <div class="sec-label">Works</div>
+        <h2 class="sec-title">作品</h2>
+      </div>
+
+      <a class="card work-card reveal" href="liveplan/">
+        <div class="work-head">
+          <span class="t">🎤 LivePlan</span>
+          <span class="arrow">デモを見る →</span>
+        </div>
+        <div class="work-body">
+          <p>
+            行きたいライブの予定を登録・検索・管理できる Web アプリ。
+            カード一覧・カレンダー表示・参戦統計ダッシュボードを備えています。
+            もともと Java（Servlet / JSP）＋ MySQL で開発したものを、
+            HTML / CSS / JavaScript ＋ JSON の静的アプリとして移植しました。
+          </p>
+          <ul class="chips">
+            <li>HTML / CSS / JS</li>
+            <li>JSON データ</li>
+            <li>localStorage</li>
+            <li>Java から移植</li>
+          </ul>
+        </div>
+      </a>
+
+      <div class="more-works reveal">
+        <a class="btn btn-ghost" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">
+          GitHub で他のリポジトリを見る →
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= Contact ================= -->
+    <section class="block" id="contact">
+      <div class="reveal">
+        <div class="sec-label">Contact</div>
+        <h2 class="sec-title">連絡先</h2>
+      </div>
+      <div class="card contact-card reveal">
+        <p>お気軽にご連絡ください。</p>
+        <div class="contact-links">
+          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">✉ Email</a>
+          <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub @ryota-ender</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">&copy; 2026 Ryota — Built with GitHub Pages</div>
+  </footer>
+
+  <script>
+    // ---------- タイピングアニメーション ----------
+    (() => {
+      const phrases = [
+        "ソフトウェア開発を学んでいます",
+        "Java / MySQL / Web フロントエンド",
+        "ライブとフェスが原動力です 🎶",
+      ];
+      const el = document.getElementById("typeTarget");
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) { el.textContent = phrases[0]; return; }
+
+      let pi = 0, ci = 0, deleting = false;
+      (function tick() {
+        const phrase = phrases[pi];
+        ci += deleting ? -1 : 1;
+        el.textContent = phrase.slice(0, ci);
+        let wait = deleting ? 34 : 74;
+        if (!deleting && ci === phrase.length) { wait = 1800; deleting = true; }
+        else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; wait = 350; }
+        setTimeout(tick, wait);
+      })();
+    })();
+
+    // ---------- スクロールで要素をふわっと表示 ----------
+    (() => {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("shown");
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll(".reveal").forEach((el, i) => {
+        el.style.transitionDelay = (i % 6) * 0.06 + "s";
+        io.observe(el);
+      });
+    })();
+  </script>
 </body>
 </html>
