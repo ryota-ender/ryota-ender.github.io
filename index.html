@@ -4,321 +4,822 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryota | Portfolio</title>
-  <meta name="description" content="Ryota の自己紹介・ポートフォリオページ">
+  <meta name="description" content="Ryota のポートフォリオ。Java / MySQL / Web フロントエンドを学びながら、音楽ライブをテーマにしたアプリを作っています。">
+  <meta name="theme-color" content="#0e0b16">
+  <meta property="og:title" content="Ryota | Portfolio">
+  <meta property="og:description" content="Java / MySQL / Web フロントエンドを学ぶ Ryota のポートフォリオ">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ryota-ender.github.io/">
+  <meta property="og:image" content="https://github.com/ryota-ender.png">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0e0b16;
-      --bg-2: #171327;
-      --border: rgba(255, 255, 255, 0.09);
-      --border-strong: rgba(255, 255, 255, 0.18);
-      --text: #eceaf4;
-      --text-2: #a9a5bd;
-      --text-3: #767189;
-      --accent: #8b5cf6;
-      --accent-2: #22d3ee;
-      --grad: linear-gradient(135deg, #8b5cf6, #22d3ee);
-      --radius: 16px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-      --glow: 0 0 28px rgba(139, 92, 246, 0.35);
+      --bg: #0c0914;
+      --bg-2: #151021;
+      --panel: rgba(22, 17, 36, 0.72);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #f0eef8;
+      --text-2: #aaa5c0;
+      --text-3: #6f6a86;
+      --violet: #a78bfa;
+      --cyan: #22d3ee;
+      --pink: #f472b6;
+      --grad: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
+      --grad-soft: linear-gradient(120deg, rgba(167, 139, 250, 0.55), rgba(34, 211, 238, 0.55));
+      --font-jp: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+      --font-en: "Syne", "Zen Kaku Gothic New", sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --radius: 20px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Hiragino Sans", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font-jp);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.85;
+      line-height: 1.9;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: rgba(139, 92, 246, 0.45); }
+    ::selection { background: rgba(167, 139, 250, 0.45); }
 
-    /* ---------- 背景（漂う光のブロブ） ---------- */
-    .blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-    .blob {
+    /* 細いスクロールバー */
+    ::-webkit-scrollbar { width: 9px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #2c2544; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3d3460; }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+
+    /* ============ ローディング ============ */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      transition: opacity 0.55s ease, visibility 0.55s;
+    }
+    .loader.done { opacity: 0; visibility: hidden; }
+    .loader .mark {
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      background: var(--grad);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 1.4s linear infinite;
+    }
+
+    /* ============ 背景レイヤー ============ */
+    .bg-layer { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+    .aurora {
       position: absolute;
+      width: 130vmax;
+      height: 130vmax;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      background:
+        radial-gradient(closest-side, rgba(167, 139, 250, 0.20), transparent 62%),
+        radial-gradient(closest-side, rgba(34, 211, 238, 0.13), transparent 60%);
+      background-position: 18% 22%, 78% 74%;
+      background-repeat: no-repeat;
+      background-size: 52% 52%, 46% 46%;
+      animation: aurora 34s var(--ease) infinite alternate;
+    }
+    @keyframes aurora {
+      0%   { rotate: 0deg;   scale: 1; }
+      100% { rotate: 40deg;  scale: 1.22; }
+    }
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
+    }
+    /* 粒状ノイズ（質感） */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* カーソル追従グロー（PC のみ） */
+    .cursor-glow {
+      position: fixed;
+      width: 480px;
+      height: 480px;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.17;
-      animation: float 26s ease-in-out infinite alternate;
-    }
-    .blob.b1 { width: 55vmax; height: 55vmax; background: #8b5cf6; top: -22vmax; left: -14vmax; }
-    .blob.b2 { width: 48vmax; height: 48vmax; background: #0ea5b7; bottom: -20vmax; right: -12vmax; animation-delay: -9s; }
-    .blob.b3 { width: 34vmax; height: 34vmax; background: #e879a9; top: 42%; left: 58%; opacity: 0.10; animation-delay: -18s; }
-    @keyframes float {
-      from { transform: translate(0, 0) scale(1); }
-      to   { transform: translate(7vmax, 5vmax) scale(1.18); }
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.16), transparent 62%);
+      translate: -50% -50%;
+      opacity: 0;
+      transition: opacity 0.5s;
     }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 0 22px; }
+    /* スクロール進捗バー */
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      z-index: 200;
+      background: var(--grad);
+    }
 
-    /* ---------- ナビ ---------- */
+    .container { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+
+    /* ============ ナビ ============ */
     .nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(14, 11, 22, 0.72);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(12, 9, 20, 0.62);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
     }
+    .nav.scrolled { border-color: var(--border); background: rgba(12, 9, 20, 0.82); }
     .nav .inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 0;
+      padding: 15px 0;
       gap: 12px;
     }
     .nav .logo {
+      font-family: var(--font-en);
       font-weight: 800;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
       text-decoration: none;
       background: var(--grad);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 0.03em;
     }
-    .nav ul { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav ul { display: flex; gap: 2px; list-style: none; }
     .nav a.nav-link {
+      position: relative;
       color: var(--text-2);
       text-decoration: none;
-      font-size: 0.86rem;
-      font-weight: 600;
-      padding: 6px 14px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 7px 15px;
       border-radius: 999px;
-      transition: color 0.18s, background 0.18s;
+      transition: color 0.2s, background 0.2s;
     }
-    .nav a.nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.07); }
+    .nav a.nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+    .nav a.nav-link.active { color: var(--text); }
+    .nav a.nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      translate: -50%;
+      width: 14px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--grad);
+    }
 
-    /* ---------- ヒーロー ---------- */
+    /* ============ ヒーロー ============ */
     .hero {
-      min-height: 88vh;
+      min-height: calc(100svh - 60px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 0 40px;
+      padding: 48px 0 90px;
       position: relative;
     }
-    .avatar-ring {
-      position: relative;
-      width: 132px;
-      height: 132px;
-      margin-bottom: 28px;
-      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    .hero > * { animation: rise 0.9s var(--ease) both; }
+
+    .status-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-2);
+      border: 1px solid var(--border-strong);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 999px;
+      padding: 6px 16px;
+      backdrop-filter: blur(8px);
     }
-    .avatar-ring::before {
+    .pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 10px #34d399;
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    .avatar-wrap { position: relative; width: 148px; height: 148px; margin-bottom: 30px; animation-delay: 0.08s; }
+    .avatar-wrap::before {
       content: "";
       position: absolute;
-      inset: -5px;
+      inset: -6px;
       border-radius: 50%;
-      background: conic-gradient(from 0deg, #8b5cf6, #22d3ee, #e879a9, #8b5cf6);
-      animation: spin 6s linear infinite;
+      background: conic-gradient(from 0deg, #a78bfa, #22d3ee, #f472b6, #a78bfa);
+      animation: spin 7s linear infinite;
     }
-    .avatar-ring img {
+    .avatar-wrap::after {
+      content: "";
+      position: absolute;
+      inset: -22px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      animation: spin 26s linear infinite reverse;
+    }
+    .avatar-wrap img {
       position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 50%;
-      border: 4px solid var(--bg);
-      display: block;
       object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--bg);
+      display: block;
+    }
+    .avatar-wrap .orbit-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      margin: -5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+      animation: orbit 7s linear infinite;
+    }
+    @keyframes orbit {
+      from { transform: rotate(0deg)   translateX(96px); }
+      to   { transform: rotate(360deg) translateX(96px); }
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .hero h1 {
-      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-family: var(--font-en);
+      font-size: clamp(2.7rem, 8vw, 4.6rem);
       font-weight: 800;
-      letter-spacing: 0.02em;
-      line-height: 1.25;
-      animation: rise 0.8s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
+      line-height: 1.16;
+      letter-spacing: 0.01em;
+      text-wrap: balance;
+      animation-delay: 0.16s;
     }
     .hero h1 .grad {
+      background: var(--grad);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 5s linear infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 0% 0; }
+      to   { background-position: 220% 0; }
+    }
+
+    .hero .tagline {
+      margin-top: 16px;
+      color: var(--text-2);
+      font-size: 1.02rem;
+      min-height: 1.9em;
+      animation-delay: 0.24s;
+    }
+    .type-caret { border-right: 2px solid var(--cyan); padding-right: 3px; }
+
+    .hero .cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; justify-content: center; animation-delay: 0.32s; }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 30px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s;
+      will-change: transform;
+    }
+    .btn-grad { background: var(--grad); background-size: 160% 100%; color: #fff; }
+    .btn-grad:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 34px rgba(139, 92, 246, 0.45); background-position: 80% 0; }
+    .btn-ghost {
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+    }
+    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.3); }
+
+    /* カウントアップ統計 */
+    .hero-stats {
+      display: flex;
+      gap: clamp(26px, 6vw, 64px);
+      margin-top: 52px;
+      animation-delay: 0.4s;
+    }
+    .hstat { text-align: center; }
+    .hstat .num {
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      line-height: 1.2;
       background: var(--grad);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .hero .tagline {
-      margin-top: 14px;
-      color: var(--text-2);
-      font-size: 1.02rem;
-      animation: rise 0.8s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    /* タイピング風カーソル */
-    .type-target { border-right: 2px solid var(--accent-2); padding-right: 3px; }
+    .hstat .lbl { font-size: 0.74rem; color: var(--text-3); font-weight: 700; letter-spacing: 0.08em; }
 
-    .hero .cta {
+    /* イコライザー（音楽モチーフ） */
+    .equalizer {
       display: flex;
-      gap: 14px;
-      margin-top: 34px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: rise 0.8s 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+      align-items: flex-end;
+      gap: 4px;
+      height: 34px;
+      margin-top: 46px;
+      opacity: 0.7;
+      animation-delay: 0.48s;
     }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 0.92rem;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    .equalizer span {
+      width: 4px;
+      border-radius: 3px 3px 0 0;
+      background: var(--grad);
+      background-size: 100% 300%;
+      transform-origin: bottom;
+      animation: eq 1s ease-in-out infinite alternate;
     }
-    .btn-grad { background: var(--grad); color: #fff; }
-    .btn-grad:hover { transform: translateY(-3px); box-shadow: var(--glow); }
-    .btn-ghost { border: 1px solid var(--border-strong); color: var(--text); background: rgba(255,255,255,0.04); }
-    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.09); }
+    @keyframes eq { from { transform: scaleY(0.18); } to { transform: scaleY(1); } }
 
     .scroll-cue {
       position: absolute;
-      bottom: 26px;
+      bottom: 22px;
       left: 50%;
-      transform: translateX(-50%);
+      translate: -50%;
       color: var(--text-3);
-      font-size: 1.4rem;
-      animation: bob 1.8s ease-in-out infinite;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
       text-decoration: none;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: rise 0.9s 0.6s var(--ease) both;
     }
-    @keyframes bob {
-      0%, 100% { transform: translate(-50%, 0); }
-      50%      { transform: translate(-50%, 9px); }
+    .scroll-cue::after {
+      content: "";
+      width: 1px;
+      height: 42px;
+      background: linear-gradient(var(--text-3), transparent);
+      animation: cueline 1.8s ease-in-out infinite;
     }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(26px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes cueline { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ---------- セクション共通 ---------- */
-    section.block { padding: 88px 0 20px; }
-    .sec-label {
-      font-size: 0.76rem;
+    /* ============ マーキー（流れるリボン） ============ */
+    .marquee {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      overflow: hidden;
+      padding: 15px 0;
+      display: flex;
+      user-select: none;
+    }
+    .marquee .track {
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+      min-width: 100%;
+      animation: scroll-x 30s linear infinite;
+    }
+    .marquee:hover .track { animation-play-state: paused; }
+    .marquee span {
+      font-family: var(--font-en);
       font-weight: 800;
-      letter-spacing: 0.24em;
-      color: var(--accent-2);
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-size: 0.92rem;
+      letter-spacing: 0.22em;
+      color: var(--text-3);
+      padding: 0 28px;
+      white-space: nowrap;
+    }
+    .marquee span em { font-style: normal; color: var(--violet); padding-right: 28px; }
+    @keyframes scroll-x { to { transform: translateX(-100%); } }
+
+    /* ============ セクション共通 ============ */
+    section.block { padding: 108px 0 12px; scroll-margin-top: 60px; }
+    .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 40px; flex-wrap: wrap; }
+    .sec-no {
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
     }
     .sec-title {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 800;
-      margin-bottom: 30px;
+      font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
       position: relative;
-      display: inline-block;
     }
     .sec-title::after {
       content: "";
       position: absolute;
       left: 0;
-      bottom: -8px;
-      width: 46px;
+      bottom: -10px;
+      width: 52px;
       height: 4px;
       border-radius: 2px;
       background: var(--grad);
     }
+    .sec-sub { color: var(--text-3); font-size: 0.82rem; font-weight: 500; margin-left: auto; }
 
-    /* スクロールで浮かび上がる */
-    .reveal { opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
-    .reveal.shown { opacity: 1; transform: translateY(0); }
+    .reveal { opacity: 0; transform: translateY(38px); transition: opacity 0.8s ease, transform 0.8s var(--ease); }
+    .reveal.shown { opacity: 1; transform: none; }
 
     .card {
-      background: rgba(23, 19, 39, 0.82);
+      background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
-    /* ---------- About ---------- */
-    .about-card { padding: 30px 34px; font-size: 0.98rem; }
-    .about-card p + p { margin-top: 12px; }
-    .about-card .hl { color: var(--accent-2); font-weight: 700; }
-
-    /* ---------- Skills ---------- */
-    .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 14px;
-    }
-    .skill {
-      padding: 20px 14px;
+    /* ============ About ============ */
+    .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 22px; align-items: stretch; }
+    .about-side {
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
     }
-    .skill:hover {
-      transform: translateY(-5px);
-      border-color: rgba(139, 92, 246, 0.5);
-      box-shadow: var(--glow);
+    .about-side::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.16), transparent 65%);
     }
-    .skill .icon { font-size: 1.7rem; display: block; margin-bottom: 8px; }
-    .skill .name { font-weight: 700; font-size: 0.92rem; }
-    .skill .note { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
+    .about-side .big-emoji { font-size: 3.2rem; line-height: 1; filter: drop-shadow(0 6px 18px rgba(167, 139, 250, 0.5)); }
+    .about-side .name-en { font-family: var(--font-en); font-weight: 800; font-size: 1.3rem; letter-spacing: 0.04em; }
+    .about-side .name-jp { color: var(--text-3); font-size: 0.78rem; font-weight: 500; }
+    .about-side .tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .about-side .tags span {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 2px 11px;
+    }
+    .about-main { padding: 32px 36px; font-size: 0.96rem; }
+    .about-main p + p { margin-top: 13px; }
+    .about-main .hl {
+      font-weight: 700;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-    /* ---------- Works ---------- */
-    .work-card {
+    /* 学習の歩み（タイムライン） */
+    .timeline { margin-top: 26px; display: grid; gap: 0; }
+    .tl-item { position: relative; padding: 0 0 26px 34px; }
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: -4px;
+      width: 1px;
+      background: linear-gradient(rgba(167, 139, 250, 0.6), rgba(34, 211, 238, 0.25));
+    }
+    .tl-item:last-child::before { display: none; }
+    .tl-item::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 3px solid var(--violet);
+      box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+    }
+    .tl-item .step { font-family: var(--font-en); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.18em; color: var(--cyan); }
+    .tl-item h3 { font-size: 0.98rem; font-weight: 700; margin: 2px 0; }
+    .tl-item p { font-size: 0.85rem; color: var(--text-2); }
+
+    /* ============ Skills ============ */
+    .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 16px; }
+    .skill {
+      position: relative;
+      padding: 24px 16px 20px;
+      text-align: center;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+      will-change: transform;
+    }
+    .skill::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -30%, rgba(167, 139, 250, 0.22), transparent 62%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .skill:hover { transform: translateY(-6px); border-color: rgba(167, 139, 250, 0.55); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45), 0 0 24px rgba(167, 139, 250, 0.2); }
+    .skill:hover::before { opacity: 1; }
+    .skill .icon { font-size: 1.9rem; display: block; margin-bottom: 10px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
+    .skill .name { font-family: var(--font-en); font-weight: 800; font-size: 0.94rem; letter-spacing: 0.02em; }
+    .skill .name.jp { font-family: var(--font-jp); }
+    .skill .note { font-size: 0.72rem; color: var(--text-3); margin-top: 3px; }
+    .skill .bar { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); margin-top: 14px; overflow: hidden; }
+    .skill .bar i {
       display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 3px;
+      background: var(--grad);
+      transition: width 1.1s var(--ease) 0.15s;
+    }
+    .shown .skill .bar i, .skill.shown .bar i { width: var(--lv); }
+
+    /* ============ Works ============ */
+    .work-feature {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      overflow: hidden;
       text-decoration: none;
       color: inherit;
+      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+      will-change: transform;
+    }
+    .work-feature:hover { transform: translateY(-6px); border-color: rgba(34, 211, 238, 0.5); box-shadow: var(--shadow), 0 0 34px rgba(34, 211, 238, 0.18); }
+
+    /* ブラウザ風モックアップ */
+    .mock {
+      background: linear-gradient(150deg, rgba(167, 139, 250, 0.14), rgba(34, 211, 238, 0.08));
+      border-right: 1px solid var(--border);
+      padding: 30px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock .window {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      background: #120e1e;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
       overflow: hidden;
-      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
-      margin-bottom: 20px;
+      transform: rotate(-1.6deg);
+      transition: transform 0.4s var(--ease);
     }
-    .work-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(34, 211, 238, 0.5);
-      box-shadow: var(--shadow), 0 0 28px rgba(34, 211, 238, 0.25);
-    }
-    .work-head {
-      padding: 26px 30px 20px;
-      background: linear-gradient(120deg, rgba(139, 92, 246, 0.2), rgba(34, 211, 238, 0.1));
+    .work-feature:hover .mock .window { transform: rotate(0deg) scale(1.03); }
+    .mock .bar-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
       border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .mock .bar-top i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+    .mock .bar-top i:nth-child(1) { background: #ff5f57; }
+    .mock .bar-top i:nth-child(2) { background: #febc2e; }
+    .mock .bar-top i:nth-child(3) { background: #28c840; }
+    .mock .bar-top .url {
+      margin-left: 8px;
+      flex: 1;
+      font-size: 0.62rem;
+      color: var(--text-3);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 5px;
+      padding: 2px 10px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .mock .app { padding: 13px; }
+    .mock .app .app-head {
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: 0.72rem;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 9px;
+    }
+    .mock .mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .mock .mini {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .mock .mini .mh { height: 22px; background: linear-gradient(120deg, rgba(139, 92, 246, 0.5), rgba(34, 211, 238, 0.35)); }
+    .mock .mini .ml { height: 6px; margin: 7px 8px 4px; border-radius: 3px; background: rgba(255, 255, 255, 0.16); width: 72%; }
+    .mock .mini .ml.s { width: 46%; margin-top: 0; margin-bottom: 9px; background: rgba(255, 255, 255, 0.09); }
+    .mock .eq-row { display: flex; gap: 3px; align-items: flex-end; height: 26px; margin-top: 11px; }
+    .mock .eq-row i {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      background: var(--grad-soft);
+      transform-origin: bottom;
+      animation: eq 1.1s ease-in-out infinite alternate;
+    }
+
+    .work-info { padding: 32px 34px; display: flex; flex-direction: column; }
+    .work-info .wt {
+      font-family: var(--font-en);
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .work-info .wd { color: var(--text-2); font-size: 0.9rem; margin: 12px 0 18px; flex: 1; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-bottom: 22px; }
+    .chips li {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #cabffa;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.38);
+      border-radius: 999px;
+      padding: 3px 13px;
+    }
+    .work-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .work-links .go { font-weight: 700; font-size: 0.86rem; color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    .work-links .go .ar { transition: translate 0.25s var(--ease); }
+    .work-feature:hover .go .ar { translate: 5px; }
+
+    .work-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
+    .work-sub {
+      padding: 26px 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s var(--ease), border-color 0.3s;
+    }
+    .work-sub:hover { transform: translateY(-5px); border-color: rgba(167, 139, 250, 0.5); }
+    .work-sub h3 { font-size: 1.02rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
+    .work-sub p { font-size: 0.84rem; color: var(--text-2); margin-top: 7px; }
+    .work-sub.soon { border-style: dashed; opacity: 0.75; }
+    .work-sub.soon h3 { color: var(--text-2); }
+
+    /* ============ Contact ============ */
+    .contact-card {
+      position: relative;
+      padding: 56px 36px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(120deg, rgba(167, 139, 250, 0.7), rgba(34, 211, 238, 0.5), rgba(244, 114, 182, 0.55));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .contact-card::after {
+      content: "";
+      position: absolute;
+      width: 60%;
+      height: 130%;
+      top: -60%;
+      left: 20%;
+      background: radial-gradient(closest-side, rgba(167, 139, 250, 0.22), transparent);
+      pointer-events: none;
+    }
+    .contact-card h3 {
+      font-family: var(--font-en);
+      font-size: clamp(1.6rem, 5vw, 2.3rem);
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .contact-card p { color: var(--text-2); margin: 12px 0 28px; font-size: 0.92rem; position: relative; }
+    .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; }
+
+    /* ============ フッター ============ */
+    footer {
+      margin-top: 110px;
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+    }
+    footer .inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-    }
-    .work-head .t { font-size: 1.25rem; font-weight: 800; }
-    .work-head .arrow { color: var(--accent-2); font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
-    .work-body { padding: 20px 30px 26px; }
-    .work-body p { color: var(--text-2); font-size: 0.92rem; margin-bottom: 14px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
-    .chips li {
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: #c4b5fd;
-      background: rgba(139, 92, 246, 0.13);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-      border-radius: 999px;
-      padding: 3px 12px;
-    }
-    .more-works { text-align: center; margin-top: 6px; }
-
-    /* ---------- Contact ---------- */
-    .contact-card { padding: 34px; text-align: center; }
-    .contact-card p { color: var(--text-2); margin-bottom: 22px; font-size: 0.94rem; }
-    .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-
-    /* ---------- フッター ---------- */
-    footer {
-      margin-top: 90px;
-      border-top: 1px solid var(--border);
-      padding: 26px 0;
-      text-align: center;
       color: var(--text-3);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
+    footer .f-logo { font-family: var(--font-en); font-weight: 800; color: var(--text-2); }
 
-    @media (max-width: 560px) {
+    .to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 150;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background: rgba(22, 17, 36, 0.85);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      font-size: 1.1rem;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      translate: 0 12px;
+      transition: opacity 0.3s, translate 0.3s var(--ease), box-shadow 0.3s;
+    }
+    .to-top.show { opacity: 1; pointer-events: auto; translate: 0 0; }
+    .to-top:hover { box-shadow: 0 0 22px rgba(139, 92, 246, 0.45); }
+
+    /* トースト */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      translate: -50% 16px;
+      z-index: 300;
+      background: var(--bg-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 10px 24px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, translate 0.25s var(--ease);
+    }
+    .toast.show { opacity: 1; translate: -50% 0; }
+
+    /* ============ レスポンシブ ============ */
+    @media (max-width: 760px) {
+      .about-grid, .work-feature, .work-sub-grid { grid-template-columns: 1fr; }
+      .mock { border-right: none; border-bottom: 1px solid var(--border); }
       .nav ul { display: none; }
-      .about-card, .work-head, .work-body, .contact-card { padding-left: 20px; padding-right: 20px; }
+      .hero-stats { gap: 30px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -329,19 +830,26 @@
       }
       html { scroll-behavior: auto; }
       .reveal { opacity: 1; transform: none; }
-      .type-target { border-right: none; }
+      .type-caret { border-right: none; }
+      .cursor-glow { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="blobs" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-  </div>
+  <!-- ローディング -->
+  <div class="loader" id="loader" aria-hidden="true"><span class="mark">Ryota</span></div>
 
-  <nav class="nav">
+  <!-- 背景 -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="bg-grid"></div>
+  </div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- ナビ -->
+  <nav class="nav" id="nav">
     <div class="container inner">
       <a class="logo" href="#top">Ryota</a>
       <ul>
@@ -355,97 +863,183 @@
 
   <!-- ================= Hero ================= -->
   <header class="hero container" id="top">
-    <div class="avatar-ring">
-      <!-- GitHub のプロフィール画像を自動表示 -->
-      <img src="https://github.com/ryota-ender.png" alt="プロフィール画像">
+    <div class="status-pills">
+      <span class="pill"><span class="dot"></span>Learning Software Development</span>
+      <span class="pill">📍 Japan</span>
+      <span class="pill">🎧 Live Music Lover</span>
     </div>
+
+    <div class="avatar-wrap">
+      <!-- GitHub のプロフィール画像を自動表示 -->
+      <img src="https://github.com/ryota-ender.png" alt="Ryota のプロフィール画像">
+      <span class="orbit-dot" aria-hidden="true"></span>
+    </div>
+
     <h1>Hi, I'm <span class="grad">Ryota</span></h1>
-    <p class="tagline"><span class="type-target" id="typeTarget"></span></p>
+    <p class="tagline"><span class="type-caret" id="typeTarget"></span></p>
+
     <div class="cta">
       <a class="btn btn-grad" href="#works">作品を見る 🎧</a>
-      <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
-    <a class="scroll-cue" href="#about" aria-label="下へスクロール">▾</a>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="num" data-count="5" data-suffix="+">0</div><div class="lbl">PROJECTS</div></div>
+      <div class="hstat"><div class="num" data-count="6" data-suffix="">0</div><div class="lbl">SKILLS</div></div>
+      <div class="hstat"><div class="num" data-count="50" data-suffix="+">0</div><div class="lbl">LIVES</div></div>
+    </div>
+
+    <div class="equalizer" id="equalizer" aria-hidden="true"></div>
+
+    <a class="scroll-cue" href="#about" aria-label="下へスクロール">SCROLL</a>
   </header>
+
+  <!-- マーキー -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="marqueeTrack">
+      <span>JAVA<em> ✦</em>MYSQL<em> ✦</em>JAVASCRIPT<em> ✦</em>HTML / CSS<em> ✦</em>PYTHON<em> ✦</em>FLASK<em> ✦</em>GIT & GITHUB<em> ✦</em>LIVE MUSIC<em> ✦</em></span>
+    </div>
+  </div>
 
   <main class="container">
 
     <!-- ================= About ================= -->
     <section class="block" id="about">
-      <div class="reveal">
-        <div class="sec-label">About</div>
+      <div class="sec-head reveal">
+        <span class="sec-no">01</span>
         <h2 class="sec-title">自己紹介</h2>
+        <span class="sec-sub">ABOUT ME</span>
       </div>
-      <div class="card about-card reveal">
-        <p>はじめまして、<span class="hl">Ryota</span> です。ソフトウェア開発を学びながら、Web アプリケーションの制作に取り組んでいます。</p>
-        <p>Java（Servlet / JSP）＋ MySQL でのサーバーサイド開発から、HTML / CSS / JavaScript でのフロントエンド実装まで、幅広く挑戦中です。</p>
-        <p>趣味はライブ・フェス参戦。「行きたいライブを管理したい」という自分の欲しいものを、そのままアプリにしています🎤</p>
-        <!-- ここに経歴などを自由に書き足してください -->
+
+      <div class="about-grid">
+        <div class="card about-side reveal">
+          <span class="big-emoji">🎤</span>
+          <span class="name-en">Ryota</span>
+          <span class="name-jp">Software Developer (Learning)</span>
+          <div class="tags">
+            <span>Web アプリ</span><span>DB 設計</span><span>フェス好き</span>
+          </div>
+        </div>
+
+        <div class="card about-main reveal">
+          <p>はじめまして、<span class="hl">Ryota</span> です。ソフトウェア開発を学びながら、Web アプリケーションの制作に取り組んでいます。</p>
+          <p>Java（Servlet / JSP）＋ MySQL によるサーバーサイド開発から学び始め、現在は HTML / CSS / JavaScript でのフロントエンド実装にも幅を広げています。</p>
+          <p>原動力はライブ・フェス。<span class="hl">「自分が欲しいものを、自分の手で作る」</span>をテーマに、ライブ参戦を管理するアプリ「LivePlan」を開発しました。</p>
+          <!-- ここに経歴などを自由に書き足してください -->
+
+          <div class="timeline">
+            <div class="tl-item reveal">
+              <span class="step">STEP 01</span>
+              <h3>Java と MySQL でサーバーサイド開発を学習</h3>
+              <p>MVC・レイヤー構成・トランザクションなど、Web アプリの基礎を習得</p>
+            </div>
+            <div class="tl-item reveal">
+              <span class="step">STEP 02</span>
+              <h3>LivePlan（Servlet / JSP + MySQL）を開発</h3>
+              <p>ライブ参戦スケジュールを登録・検索・管理する Web アプリを設計から実装まで</p>
+            </div>
+            <div class="tl-item reveal">
+              <span class="step">STEP 03</span>
+              <h3>HTML / CSS / JavaScript に移植して公開</h3>
+              <p>SQL を JSON に置き換え、GitHub Pages で動く静的アプリとして再実装</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ================= Skills ================= -->
     <section class="block" id="skills">
-      <div class="reveal">
-        <div class="sec-label">Skills</div>
+      <div class="sec-head reveal">
+        <span class="sec-no">02</span>
         <h2 class="sec-title">スキル</h2>
+        <span class="sec-sub">SKILLS</span>
       </div>
+
       <div class="skill-grid">
-        <div class="card skill reveal"><span class="icon">☕</span><span class="name">Java</span><div class="note">Servlet / JSP</div></div>
-        <div class="card skill reveal"><span class="icon">🐬</span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div></div>
-        <div class="card skill reveal"><span class="icon">🌐</span><span class="name">HTML / CSS</span><div class="note">レスポンシブ対応</div></div>
-        <div class="card skill reveal"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS</div></div>
-        <div class="card skill reveal"><span class="icon">🐍</span><span class="name">Python</span><div class="note">Flask</div></div>
-        <div class="card skill reveal"><span class="icon">🔧</span><span class="name">Git / GitHub</span><div class="note">バージョン管理</div></div>
+        <div class="card skill reveal" style="--lv: 78%"><span class="icon">☕</span><span class="name">Java</span><div class="note">Servlet / JSP / MVC</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 72%"><span class="icon">🐬</span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 74%"><span class="icon">🌐</span><span class="name">HTML / CSS</span><div class="note">レスポンシブ / アニメーション</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 68%"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS / DOM</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 60%"><span class="icon">🐍</span><span class="name">Python</span><div class="note">Flask</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 70%"><span class="icon">🔧</span><span class="name">Git / GitHub</span><div class="note">バージョン管理 / Pages</div><div class="bar"><i></i></div></div>
       </div>
     </section>
 
     <!-- ================= Works ================= -->
     <section class="block" id="works">
-      <div class="reveal">
-        <div class="sec-label">Works</div>
+      <div class="sec-head reveal">
+        <span class="sec-no">03</span>
         <h2 class="sec-title">作品</h2>
+        <span class="sec-sub">WORKS</span>
       </div>
 
-      <a class="card work-card reveal" href="liveplan/">
-        <div class="work-head">
-          <span class="t">🎤 LivePlan</span>
-          <span class="arrow">デモを見る →</span>
+      <a class="card work-feature reveal" href="liveplan/">
+        <div class="mock" aria-hidden="true">
+          <div class="window">
+            <div class="bar-top"><i></i><i></i><i></i><span class="url">ryota-ender.github.io/liveplan</span></div>
+            <div class="app">
+              <div class="app-head">LIVEPLAN — SCHEDULE</div>
+              <div class="mini-cards">
+                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
+                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
+                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
+                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
+              </div>
+              <div class="eq-row">
+                <i style="animation-duration:.7s"></i><i style="animation-duration:1.1s"></i><i style="animation-duration:.5s"></i><i style="animation-duration:.9s"></i><i style="animation-duration:.6s"></i><i style="animation-duration:1.2s"></i><i style="animation-duration:.8s"></i><i style="animation-duration:.55s"></i><i style="animation-duration:1s"></i><i style="animation-duration:.75s"></i>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="work-body">
-          <p>
+        <div class="work-info">
+          <h3 class="wt">🎤 LivePlan</h3>
+          <p class="wd">
             行きたいライブの予定を登録・検索・管理できる Web アプリ。
-            カード一覧・カレンダー表示・参戦統計ダッシュボードを備えています。
-            もともと Java（Servlet / JSP）＋ MySQL で開発したものを、
-            HTML / CSS / JavaScript ＋ JSON の静的アプリとして移植しました。
+            カード一覧・カレンダー・参戦統計ダッシュボードを搭載。
+            Java（Servlet / JSP）＋ MySQL 版から HTML / CSS / JavaScript ＋ JSON へ
+            フルスクラッチで移植しました。
           </p>
           <ul class="chips">
             <li>HTML / CSS / JS</li>
-            <li>JSON データ</li>
+            <li>JSON</li>
             <li>localStorage</li>
             <li>Java から移植</li>
+            <li>自作カレンダー</li>
           </ul>
+          <div class="work-links">
+            <span class="go">デモを見る <span class="ar">→</span></span>
+          </div>
         </div>
       </a>
 
-      <div class="more-works reveal">
-        <a class="btn btn-ghost" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">
-          GitHub で他のリポジトリを見る →
+      <div class="work-sub-grid">
+        <a class="card work-sub reveal" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">
+          <h3>📦 その他のリポジトリ</h3>
+          <p>Flask アプリや学習用プロジェクトなど、その他の制作物は GitHub で公開しています。</p>
         </a>
+        <div class="card work-sub soon reveal">
+          <h3>🚧 Coming Soon</h3>
+          <p>次の作品を製作中…。お楽しみに。</p>
+        </div>
       </div>
     </section>
 
     <!-- ================= Contact ================= -->
     <section class="block" id="contact">
-      <div class="reveal">
-        <div class="sec-label">Contact</div>
+      <div class="sec-head reveal">
+        <span class="sec-no">04</span>
         <h2 class="sec-title">連絡先</h2>
+        <span class="sec-sub">CONTACT</span>
       </div>
+
       <div class="card contact-card reveal">
-        <p>お気軽にご連絡ください。</p>
+        <h3>Let's Connect!</h3>
+        <p>お仕事・学習仲間・ライブ仲間、なんでもお気軽にどうぞ。</p>
         <div class="contact-links">
-          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">✉ Email</a>
-          <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub @ryota-ender</a>
+          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">✉ メールを送る</a>
+          <button class="btn btn-ghost" id="copyMail" type="button">📋 アドレスをコピー</button>
+          <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
       </div>
     </section>
@@ -453,46 +1047,170 @@
   </main>
 
   <footer>
-    <div class="container">&copy; 2026 Ryota — Built with GitHub Pages</div>
+    <div class="container inner">
+      <span class="f-logo">Ryota</span>
+      <span>&copy; 2026 Ryota — Built with GitHub Pages</span>
+    </div>
   </footer>
 
+  <button class="to-top" id="toTop" aria-label="ページ上部へ戻る">↑</button>
+  <div class="toast" id="toast" role="status"></div>
+
   <script>
-    // ---------- タイピングアニメーション ----------
     (() => {
+      "use strict";
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const $ = (s, el = document) => el.querySelector(s);
+      const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+      /* ---------- ローディング ---------- */
+      window.addEventListener("load", () => $("#loader").classList.add("done"));
+      setTimeout(() => $("#loader").classList.add("done"), 1200); // 保険
+
+      /* ---------- タイピング ---------- */
       const phrases = [
         "ソフトウェア開発を学んでいます",
         "Java / MySQL / Web フロントエンド",
         "ライブとフェスが原動力です 🎶",
       ];
-      const el = document.getElementById("typeTarget");
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) { el.textContent = phrases[0]; return; }
+      const typeEl = $("#typeTarget");
+      if (reduced) {
+        typeEl.textContent = phrases[0];
+      } else {
+        let pi = 0, ci = 0, del = false;
+        (function tick() {
+          const p = phrases[pi];
+          ci += del ? -1 : 1;
+          typeEl.textContent = p.slice(0, ci);
+          let wait = del ? 30 : 72;
+          if (!del && ci === p.length) { wait = 1900; del = true; }
+          else if (del && ci === 0) { del = false; pi = (pi + 1) % phrases.length; wait = 380; }
+          setTimeout(tick, wait);
+        })();
+      }
 
-      let pi = 0, ci = 0, deleting = false;
-      (function tick() {
-        const phrase = phrases[pi];
-        ci += deleting ? -1 : 1;
-        el.textContent = phrase.slice(0, ci);
-        let wait = deleting ? 34 : 74;
-        if (!deleting && ci === phrase.length) { wait = 1800; deleting = true; }
-        else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; wait = 350; }
-        setTimeout(tick, wait);
-      })();
-    })();
+      /* ---------- イコライザー生成 ---------- */
+      const eq = $("#equalizer");
+      for (let i = 0; i < 26; i++) {
+        const bar = document.createElement("span");
+        bar.style.height = "100%";
+        bar.style.animationDuration = (0.5 + Math.random() * 0.9).toFixed(2) + "s";
+        bar.style.animationDelay = (-Math.random()).toFixed(2) + "s";
+        eq.appendChild(bar);
+      }
 
-    // ---------- スクロールで要素をふわっと表示 ----------
-    (() => {
+      /* ---------- マーキー（トラック複製で無限ループ） ---------- */
+      const track = $("#marqueeTrack");
+      track.innerHTML += track.innerHTML;
+      const clone = track.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.parentElement.appendChild(clone);
+
+      /* ---------- スクロール表示（reveal） ---------- */
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("shown");
-            io.unobserve(e.target);
-          }
+          if (!e.isIntersecting) return;
+          e.target.classList.add("shown");
+          io.unobserve(e.target);
         });
-      }, { threshold: 0.12 });
-      document.querySelectorAll(".reveal").forEach((el, i) => {
-        el.style.transitionDelay = (i % 6) * 0.06 + "s";
+      }, { threshold: 0.14 });
+      $$(".reveal").forEach((el, i) => {
+        el.style.transitionDelay = (i % 5) * 0.07 + "s";
         io.observe(el);
+      });
+
+      /* ---------- カウントアップ ---------- */
+      const cio = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          cio.unobserve(e.target);
+          const el = e.target;
+          const target = Number(el.dataset.count);
+          const suffix = el.dataset.suffix || "";
+          if (reduced) { el.textContent = target + suffix; return; }
+          const t0 = performance.now();
+          const dur = 1300;
+          (function step(t) {
+            const p = Math.min((t - t0) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 4);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          })(t0);
+        });
+      }, { threshold: 0.6 });
+      $$("[data-count]").forEach((el) => cio.observe(el));
+
+      /* ---------- ナビ：スクロールで枠線 + スクロールスパイ ---------- */
+      const nav = $("#nav");
+      const links = $$(".nav-link");
+      const sections = links.map((a) => $(a.getAttribute("href")));
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          links.forEach((a) =>
+            a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id)
+          );
+        });
+      }, { rootMargin: "-42% 0px -52% 0px" });
+      sections.forEach((s) => s && spy.observe(s));
+
+      /* ---------- スクロール進捗・トップへ戻る ---------- */
+      const progress = $("#progress");
+      const toTop = $("#toTop");
+      addEventListener("scroll", () => {
+        const st = scrollY;
+        nav.classList.toggle("scrolled", st > 10);
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progress.style.width = (max > 0 ? (st / max) * 100 : 0) + "%";
+        toTop.classList.toggle("show", st > 560);
+      }, { passive: true });
+      toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }));
+
+      /* ---------- カーソル追従グロー（PC・reduced-motion 無効時のみ） ---------- */
+      const glow = $("#cursorGlow");
+      if (matchMedia("(pointer: fine)").matches && !reduced) {
+        let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
+        addEventListener("pointermove", (e) => {
+          tx = e.clientX; ty = e.clientY;
+          glow.style.opacity = 1;
+        }, { passive: true });
+        (function loop() {
+          gx += (tx - gx) * 0.09;
+          gy += (ty - gy) * 0.09;
+          glow.style.left = gx + "px";
+          glow.style.top = gy + "px";
+          requestAnimationFrame(loop);
+        })();
+      }
+
+      /* ---------- カードの 3D チルト（PC のみ） ---------- */
+      if (matchMedia("(pointer: fine)").matches && !reduced) {
+        $$(".skill, .work-feature").forEach((card) => {
+          card.addEventListener("pointermove", (e) => {
+            const r = card.getBoundingClientRect();
+            const rx = ((e.clientY - r.top) / r.height - 0.5) * -5;
+            const ry = ((e.clientX - r.left) / r.width - 0.5) * 5;
+            card.style.transform = `translateY(-6px) perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          });
+          card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+        });
+      }
+
+      /* ---------- メールコピー ---------- */
+      const toast = $("#toast");
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+      $("#copyMail").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText("ryota.akaba.0904@gmail.com");
+          showToast("メールアドレスをコピーしました ✅");
+        } catch {
+          showToast("コピーできませんでした");
+        }
       });
     })();
   </script>
