@@ -6,17 +6,35 @@
   <title>Ryota | Portfolio</title>
   <meta name="description" content="Ryota のポートフォリオ。Java / MySQL / Web フロントエンドを学びながら、音楽ライブをテーマにしたアプリを作っています。">
   <meta name="theme-color" content="#0e0b16">
+  <link rel="canonical" href="https://ryota-ender.github.io/">
   <meta property="og:title" content="Ryota | Portfolio">
   <meta property="og:description" content="Java / MySQL / Web フロントエンドを学ぶ Ryota のポートフォリオ">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ryota-ender.github.io/">
-  <meta property="og:image" content="https://github.com/ryota-ender.png">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://ryota-ender.github.io/assets/ogp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="apple-touch-icon" href="assets/avatar.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ryota",
+    "url": "https://ryota-ender.github.io/",
+    "image": "https://ryota-ender.github.io/assets/avatar.png",
+    "sameAs": ["https://github.com/ryota-ender"],
+    "jobTitle": "Software Developer (Learning)"
+  }
+  </script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* ============================================================
+       Ryota Portfolio — v3
+       ============================================================ */
     :root {
       --bg: #0c0914;
       --bg-2: #151021;
@@ -30,7 +48,6 @@
       --cyan: #22d3ee;
       --pink: #f472b6;
       --grad: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
-      --grad-soft: linear-gradient(120deg, rgba(167, 139, 250, 0.55), rgba(34, 211, 238, 0.55));
       --font-jp: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
       --font-en: "Syne", "Zen Kaku Gothic New", sans-serif;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -49,15 +66,13 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
+    body.cursor-on, body.cursor-on a, body.cursor-on button { cursor: none; }
 
     ::selection { background: rgba(167, 139, 250, 0.45); }
-
-    /* 細いスクロールバー */
     ::-webkit-scrollbar { width: 9px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #2c2544; border-radius: 99px; }
     ::-webkit-scrollbar-thumb:hover { background: #3d3460; }
-
     a, button { -webkit-tap-highlight-color: transparent; }
     :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
 
@@ -67,8 +82,10 @@
       inset: 0;
       z-index: 1000;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 18px;
       background: var(--bg);
       transition: opacity 0.55s ease, visibility 0.55s;
     }
@@ -76,7 +93,7 @@
     .loader .mark {
       font-family: var(--font-en);
       font-weight: 800;
-      font-size: 2rem;
+      font-size: 2.1rem;
       letter-spacing: 0.06em;
       background: var(--grad);
       background-size: 200% 100%;
@@ -85,6 +102,23 @@
       color: transparent;
       animation: shimmer 1.4s linear infinite;
     }
+    .loader .line {
+      width: 120px;
+      height: 2px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+    .loader .line::after {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 45%;
+      border-radius: 2px;
+      background: var(--grad);
+      animation: loadbar 1.1s var(--ease) infinite;
+    }
+    @keyframes loadbar { 0% { translate: -110% 0; } 100% { translate: 270% 0; } }
 
     /* ============ 背景レイヤー ============ */
     .bg-layer { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
@@ -104,9 +138,10 @@
       animation: aurora 34s var(--ease) infinite alternate;
     }
     @keyframes aurora {
-      0%   { rotate: 0deg;   scale: 1; }
-      100% { rotate: 40deg;  scale: 1.22; }
+      0%   { rotate: 0deg;  scale: 1; }
+      100% { rotate: 40deg; scale: 1.22; }
     }
+    #stars { position: absolute; inset: 0; width: 100%; height: 100%; }
     .bg-grid {
       position: absolute;
       inset: 0;
@@ -117,7 +152,12 @@
       mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
       -webkit-mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
     }
-    /* 粒状ノイズ（質感） */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 120% 90% at 50% 32%, transparent 55%, rgba(0, 0, 0, 0.42));
+    }
+    /* 粒状ノイズ */
     body::after {
       content: "";
       position: fixed;
@@ -128,7 +168,7 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* カーソル追従グロー（PC のみ） */
+    /* カーソル追従グロー */
     .cursor-glow {
       position: fixed;
       width: 480px;
@@ -141,8 +181,28 @@
       opacity: 0;
       transition: opacity 0.5s;
     }
+    /* カスタムカーソル（ドット＋リング） */
+    .cur-dot, .cur-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 600;
+      translate: -50% -50%;
+      opacity: 0;
+      mix-blend-mode: difference;
+    }
+    .cur-dot { width: 6px; height: 6px; background: #fff; }
+    .cur-ring {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s;
+    }
+    .cur-ring.grow { width: 62px; height: 62px; }
 
-    /* スクロール進捗バー */
+    /* スクロール進捗 */
     .progress {
       position: fixed;
       top: 0;
@@ -167,13 +227,7 @@
       transition: border-color 0.3s, background 0.3s;
     }
     .nav.scrolled { border-color: var(--border); background: rgba(12, 9, 20, 0.82); }
-    .nav .inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 0;
-      gap: 12px;
-    }
+    .nav .inner { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; gap: 12px; }
     .nav .logo {
       font-family: var(--font-en);
       font-weight: 800;
@@ -209,6 +263,52 @@
       border-radius: 2px;
       background: var(--grad);
     }
+
+    /* ハンバーガー */
+    .menu-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 42px;
+      height: 42px;
+      padding: 10px;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+    }
+    .menu-btn span {
+      display: block;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text);
+      transition: transform 0.3s var(--ease), opacity 0.2s;
+    }
+    .menu-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-btn.open span:nth-child(2) { opacity: 0; }
+    .menu-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s var(--ease), opacity 0.3s;
+    }
+    .mobile-menu.open { max-height: 320px; opacity: 1; }
+    .mobile-menu a {
+      display: block;
+      padding: 15px 4px;
+      color: var(--text-2);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--text); padding-left: 10px; }
+    .mobile-menu a span { color: var(--cyan); font-family: var(--font-en); font-size: 0.72rem; margin-right: 12px; }
 
     /* ============ ヒーロー ============ */
     .hero {
@@ -291,6 +391,15 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* 行マスク（下からスライドで現れる見出し） */
+    .line-mask { display: block; overflow: hidden; }
+    .line-mask .line-in {
+      display: block;
+      translate: 0 108%;
+      animation: lineUp 1s var(--ease) forwards;
+    }
+    @keyframes lineUp { to { translate: 0 0; } }
+
     .hero h1 {
       font-family: var(--font-en);
       font-size: clamp(2.7rem, 8vw, 4.6rem);
@@ -313,13 +422,7 @@
       to   { background-position: 220% 0; }
     }
 
-    .hero .tagline {
-      margin-top: 16px;
-      color: var(--text-2);
-      font-size: 1.02rem;
-      min-height: 1.9em;
-      animation-delay: 0.24s;
-    }
+    .hero .tagline { margin-top: 16px; color: var(--text-2); font-size: 1.02rem; min-height: 1.9em; animation-delay: 0.24s; }
     .type-caret { border-right: 2px solid var(--cyan); padding-right: 3px; }
 
     .hero .cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; justify-content: center; animation-delay: 0.32s; }
@@ -337,8 +440,8 @@
       text-decoration: none;
       cursor: pointer;
       border: none;
-      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s;
-      will-change: transform;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, translate 0.2s ease-out;
+      will-change: transform, translate;
     }
     .btn-grad { background: var(--grad); background-size: 160% 100%; color: #fff; }
     .btn-grad:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 34px rgba(139, 92, 246, 0.45); background-position: 80% 0; }
@@ -350,13 +453,7 @@
     }
     .btn-ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.3); }
 
-    /* カウントアップ統計 */
-    .hero-stats {
-      display: flex;
-      gap: clamp(26px, 6vw, 64px);
-      margin-top: 52px;
-      animation-delay: 0.4s;
-    }
+    .hero-stats { display: flex; gap: clamp(26px, 6vw, 64px); margin-top: 52px; animation-delay: 0.4s; }
     .hstat { text-align: center; }
     .hstat .num {
       font-family: var(--font-en);
@@ -370,16 +467,7 @@
     }
     .hstat .lbl { font-size: 0.74rem; color: var(--text-3); font-weight: 700; letter-spacing: 0.08em; }
 
-    /* イコライザー（音楽モチーフ） */
-    .equalizer {
-      display: flex;
-      align-items: flex-end;
-      gap: 4px;
-      height: 34px;
-      margin-top: 46px;
-      opacity: 0.7;
-      animation-delay: 0.48s;
-    }
+    .equalizer { display: flex; align-items: flex-end; gap: 4px; height: 34px; margin-top: 46px; opacity: 0.7; animation-delay: 0.48s; }
     .equalizer span {
       width: 4px;
       border-radius: 3px 3px 0 0;
@@ -416,7 +504,8 @@
     @keyframes cueline { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
     @keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ============ マーキー（流れるリボン） ============ */
+    /* ============ マーキー（斜めのリボン） ============ */
+    .marquee-tilt { rotate: -1.6deg; scale: 1.04; margin: 34px 0; }
     .marquee {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -426,13 +515,7 @@
       display: flex;
       user-select: none;
     }
-    .marquee .track {
-      display: flex;
-      gap: 0;
-      flex-shrink: 0;
-      min-width: 100%;
-      animation: scroll-x 30s linear infinite;
-    }
+    .marquee .track { display: flex; flex-shrink: 0; min-width: 100%; animation: scroll-x 30s linear infinite; }
     .marquee:hover .track { animation-play-state: paused; }
     .marquee span {
       font-family: var(--font-en);
@@ -448,20 +531,26 @@
 
     /* ============ セクション共通 ============ */
     section.block { padding: 108px 0 12px; scroll-margin-top: 60px; }
-    .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 40px; flex-wrap: wrap; }
-    .sec-no {
+    .sec-head { position: relative; display: flex; align-items: baseline; gap: 18px; margin-bottom: 44px; flex-wrap: wrap; }
+    .ghost {
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      translate: 0 -60%;
+      z-index: -1;
       font-family: var(--font-en);
       font-weight: 800;
-      font-size: 0.9rem;
-      color: var(--cyan);
-      letter-spacing: 0.12em;
+      font-size: clamp(4.2rem, 14vw, 8.2rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
     }
-    .sec-title {
-      font-size: clamp(1.7rem, 4.5vw, 2.3rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      position: relative;
-    }
+    .sec-no { font-family: var(--font-en); font-weight: 800; font-size: 0.9rem; color: var(--cyan); letter-spacing: 0.12em; }
+    .sec-title { font-size: clamp(1.7rem, 4.5vw, 2.3rem); font-weight: 700; letter-spacing: 0.02em; position: relative; }
     .sec-title::after {
       content: "";
       position: absolute;
@@ -527,8 +616,7 @@
       color: transparent;
     }
 
-    /* 学習の歩み（タイムライン） */
-    .timeline { margin-top: 26px; display: grid; gap: 0; }
+    .timeline { margin-top: 26px; display: grid; }
     .tl-item { position: relative; padding: 0 0 26px 34px; }
     .tl-item::before {
       content: "";
@@ -578,7 +666,6 @@
     .skill:hover::before { opacity: 1; }
     .skill .icon { font-size: 1.9rem; display: block; margin-bottom: 10px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
     .skill .name { font-family: var(--font-en); font-weight: 800; font-size: 0.94rem; letter-spacing: 0.02em; }
-    .skill .name.jp { font-family: var(--font-jp); }
     .skill .note { font-size: 0.72rem; color: var(--text-3); margin-top: 3px; }
     .skill .bar { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); margin-top: 14px; overflow: hidden; }
     .skill .bar i {
@@ -589,21 +676,42 @@
       background: var(--grad);
       transition: width 1.1s var(--ease) 0.15s;
     }
-    .shown .skill .bar i, .skill.shown .bar i { width: var(--lv); }
+    .skill.shown .bar i { width: var(--lv); }
 
     /* ============ Works ============ */
+    @property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
     .work-feature {
+      position: relative;
       display: grid;
       grid-template-columns: 1.15fr 1fr;
       overflow: hidden;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
       will-change: transform;
     }
-    .work-feature:hover { transform: translateY(-6px); border-color: rgba(34, 211, 238, 0.5); box-shadow: var(--shadow), 0 0 34px rgba(34, 211, 238, 0.18); }
+    /* ホバーで回転するグラデーション枠 */
+    .work-feature::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from var(--ang), rgba(167, 139, 250, 0.9), rgba(34, 211, 238, 0.7), rgba(244, 114, 182, 0.85), rgba(167, 139, 250, 0.9));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: spinborder 5s linear infinite;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .work-feature:hover::before { opacity: 1; }
+    @keyframes spinborder { to { --ang: 360deg; } }
+    .work-feature:hover { transform: translateY(-6px); box-shadow: var(--shadow), 0 0 34px rgba(34, 211, 238, 0.18); }
 
-    /* ブラウザ風モックアップ */
     .mock {
       background: linear-gradient(150deg, rgba(167, 139, 250, 0.14), rgba(34, 211, 238, 0.08));
       border-right: 1px solid var(--border);
@@ -614,7 +722,7 @@
     }
     .mock .window {
       width: 100%;
-      max-width: 400px;
+      max-width: 430px;
       border-radius: 12px;
       background: #120e1e;
       border: 1px solid var(--border-strong);
@@ -623,7 +731,7 @@
       transform: rotate(-1.6deg);
       transition: transform 0.4s var(--ease);
     }
-    .work-feature:hover .mock .window { transform: rotate(0deg) scale(1.03); }
+    .work-feature:hover .mock .window { transform: rotate(0deg) scale(1.04); }
     .mock .bar-top {
       display: flex;
       align-items: center;
@@ -647,45 +755,10 @@
       white-space: nowrap;
       overflow: hidden;
     }
-    .mock .app { padding: 13px; }
-    .mock .app .app-head {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: 0.72rem;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 9px;
-    }
-    .mock .mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .mock .mini {
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .mock .mini .mh { height: 22px; background: linear-gradient(120deg, rgba(139, 92, 246, 0.5), rgba(34, 211, 238, 0.35)); }
-    .mock .mini .ml { height: 6px; margin: 7px 8px 4px; border-radius: 3px; background: rgba(255, 255, 255, 0.16); width: 72%; }
-    .mock .mini .ml.s { width: 46%; margin-top: 0; margin-bottom: 9px; background: rgba(255, 255, 255, 0.09); }
-    .mock .eq-row { display: flex; gap: 3px; align-items: flex-end; height: 26px; margin-top: 11px; }
-    .mock .eq-row i {
-      flex: 1;
-      border-radius: 2px 2px 0 0;
-      background: var(--grad-soft);
-      transform-origin: bottom;
-      animation: eq 1.1s ease-in-out infinite alternate;
-    }
+    .mock .shot { display: block; width: 100%; height: auto; }
 
     .work-info { padding: 32px 34px; display: flex; flex-direction: column; }
-    .work-info .wt {
-      font-family: var(--font-en);
-      font-size: 1.5rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .work-info .wt { font-family: var(--font-en); font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
     .work-info .wd { color: var(--text-2); font-size: 0.9rem; margin: 12px 0 18px; flex: 1; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-bottom: 22px; }
     .chips li {
@@ -703,12 +776,7 @@
     .work-feature:hover .go .ar { translate: 5px; }
 
     .work-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
-    .work-sub {
-      padding: 26px 28px;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.3s var(--ease), border-color 0.3s;
-    }
+    .work-sub { padding: 26px 28px; text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), border-color 0.3s; }
     .work-sub:hover { transform: translateY(-5px); border-color: rgba(167, 139, 250, 0.5); }
     .work-sub h3 { font-size: 1.02rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
     .work-sub p { font-size: 0.84rem; color: var(--text-2); margin-top: 7px; }
@@ -716,12 +784,7 @@
     .work-sub.soon h3 { color: var(--text-2); }
 
     /* ============ Contact ============ */
-    .contact-card {
-      position: relative;
-      padding: 56px 36px;
-      text-align: center;
-      overflow: hidden;
-    }
+    .contact-card { position: relative; padding: 56px 36px; text-align: center; overflow: hidden; }
     .contact-card::before {
       content: "";
       position: absolute;
@@ -757,11 +820,7 @@
     .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; }
 
     /* ============ フッター ============ */
-    footer {
-      margin-top: 110px;
-      border-top: 1px solid var(--border);
-      padding: 30px 0;
-    }
+    footer { margin-top: 110px; border-top: 1px solid var(--border); padding: 30px 0; }
     footer .inner {
       display: flex;
       align-items: center;
@@ -795,7 +854,6 @@
     .to-top.show { opacity: 1; pointer-events: auto; translate: 0 0; }
     .to-top:hover { box-shadow: 0 0 22px rgba(139, 92, 246, 0.45); }
 
-    /* トースト */
     .toast {
       position: fixed;
       left: 50%;
@@ -819,7 +877,14 @@
       .about-grid, .work-feature, .work-sub-grid { grid-template-columns: 1fr; }
       .mock { border-right: none; border-bottom: 1px solid var(--border); }
       .nav ul { display: none; }
+      .menu-btn { display: flex; }
+      .mobile-menu { display: block; }
       .hero-stats { gap: 30px; }
+      .ghost { font-size: clamp(3.4rem, 18vw, 5.4rem); }
+    }
+
+    @media (hover: none) {
+      .cur-dot, .cur-ring { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -831,21 +896,32 @@
       html { scroll-behavior: auto; }
       .reveal { opacity: 1; transform: none; }
       .type-caret { border-right: none; }
-      .cursor-glow { display: none; }
+      .cursor-glow, .cur-dot, .cur-ring { display: none; }
+      .line-mask .line-in { translate: 0 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ローディング -->
-  <div class="loader" id="loader" aria-hidden="true"><span class="mark">Ryota</span></div>
+  <!-- ローディング（同一セッションの再訪時は即スキップ） -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <span class="mark">Ryota</span>
+    <span class="line"></span>
+  </div>
+  <script>
+    try { if (sessionStorage.getItem("visited")) document.getElementById("loader").classList.add("done"); } catch (_) {}
+  </script>
 
   <!-- 背景 -->
   <div class="bg-layer" aria-hidden="true">
     <div class="aurora"></div>
+    <canvas id="stars"></canvas>
     <div class="bg-grid"></div>
+    <div class="vignette"></div>
   </div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="cur-ring" id="curRing" aria-hidden="true"></div>
+  <div class="cur-dot" id="curDot" aria-hidden="true"></div>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- ナビ -->
@@ -858,6 +934,17 @@
         <li><a class="nav-link" href="#works">Works</a></li>
         <li><a class="nav-link" href="#contact">Contact</a></li>
       </ul>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="container">
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#about"><span>01</span>About — 自己紹介</a>
+        <a href="#skills"><span>02</span>Skills — スキル</a>
+        <a href="#works"><span>03</span>Works — 作品</a>
+        <a href="#contact"><span>04</span>Contact — 連絡先</a>
+      </div>
     </div>
   </nav>
 
@@ -870,12 +957,13 @@
     </div>
 
     <div class="avatar-wrap">
-      <!-- GitHub のプロフィール画像を自動表示 -->
-      <img src="https://github.com/ryota-ender.png" alt="Ryota のプロフィール画像">
+      <img src="assets/avatar.png" alt="Ryota のプロフィール画像" width="148" height="148">
       <span class="orbit-dot" aria-hidden="true"></span>
     </div>
 
-    <h1>Hi, I'm <span class="grad">Ryota</span></h1>
+    <h1>
+      <span class="line-mask"><span class="line-in" style="animation-delay:0.25s">Hi, I'm <span class="grad">Ryota</span></span></span>
+    </h1>
     <p class="tagline"><span class="type-caret" id="typeTarget"></span></p>
 
     <div class="cta">
@@ -895,9 +983,11 @@
   </header>
 
   <!-- マーキー -->
-  <div class="marquee" aria-hidden="true">
-    <div class="track" id="marqueeTrack">
-      <span>JAVA<em> ✦</em>MYSQL<em> ✦</em>JAVASCRIPT<em> ✦</em>HTML / CSS<em> ✦</em>PYTHON<em> ✦</em>FLASK<em> ✦</em>GIT & GITHUB<em> ✦</em>LIVE MUSIC<em> ✦</em></span>
+  <div class="marquee-tilt" aria-hidden="true">
+    <div class="marquee">
+      <div class="track" id="marqueeTrack">
+        <span>JAVA<em> ✦</em>MYSQL<em> ✦</em>JAVASCRIPT<em> ✦</em>HTML / CSS<em> ✦</em>PYTHON<em> ✦</em>FLASK<em> ✦</em>GIT & GITHUB<em> ✦</em>LIVE MUSIC<em> ✦</em></span>
+      </div>
     </div>
   </div>
 
@@ -906,6 +996,7 @@
     <!-- ================= About ================= -->
     <section class="block" id="about">
       <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">ABOUT</span>
         <span class="sec-no">01</span>
         <h2 class="sec-title">自己紹介</h2>
         <span class="sec-sub">ABOUT ME</span>
@@ -941,7 +1032,7 @@
             <div class="tl-item reveal">
               <span class="step">STEP 03</span>
               <h3>HTML / CSS / JavaScript に移植して公開</h3>
-              <p>SQL を JSON に置き換え、GitHub Pages で動く静的アプリとして再実装</p>
+              <p>SQL を JSON に置き換え、PWA として GitHub Pages で公開</p>
             </div>
           </div>
         </div>
@@ -951,6 +1042,7 @@
     <!-- ================= Skills ================= -->
     <section class="block" id="skills">
       <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">SKILLS</span>
         <span class="sec-no">02</span>
         <h2 class="sec-title">スキル</h2>
         <span class="sec-sub">SKILLS</span>
@@ -960,7 +1052,7 @@
         <div class="card skill reveal" style="--lv: 78%"><span class="icon">☕</span><span class="name">Java</span><div class="note">Servlet / JSP / MVC</div><div class="bar"><i></i></div></div>
         <div class="card skill reveal" style="--lv: 72%"><span class="icon">🐬</span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div><div class="bar"><i></i></div></div>
         <div class="card skill reveal" style="--lv: 74%"><span class="icon">🌐</span><span class="name">HTML / CSS</span><div class="note">レスポンシブ / アニメーション</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 68%"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS / DOM</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 68%"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS / PWA</div><div class="bar"><i></i></div></div>
         <div class="card skill reveal" style="--lv: 60%"><span class="icon">🐍</span><span class="name">Python</span><div class="note">Flask</div><div class="bar"><i></i></div></div>
         <div class="card skill reveal" style="--lv: 70%"><span class="icon">🔧</span><span class="name">Git / GitHub</span><div class="note">バージョン管理 / Pages</div><div class="bar"><i></i></div></div>
       </div>
@@ -969,6 +1061,7 @@
     <!-- ================= Works ================= -->
     <section class="block" id="works">
       <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">WORKS</span>
         <span class="sec-no">03</span>
         <h2 class="sec-title">作品</h2>
         <span class="sec-sub">WORKS</span>
@@ -978,34 +1071,24 @@
         <div class="mock" aria-hidden="true">
           <div class="window">
             <div class="bar-top"><i></i><i></i><i></i><span class="url">ryota-ender.github.io/liveplan</span></div>
-            <div class="app">
-              <div class="app-head">LIVEPLAN — SCHEDULE</div>
-              <div class="mini-cards">
-                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
-                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
-                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
-                <div class="mini"><div class="mh"></div><div class="ml"></div><div class="ml s"></div></div>
-              </div>
-              <div class="eq-row">
-                <i style="animation-duration:.7s"></i><i style="animation-duration:1.1s"></i><i style="animation-duration:.5s"></i><i style="animation-duration:.9s"></i><i style="animation-duration:.6s"></i><i style="animation-duration:1.2s"></i><i style="animation-duration:.8s"></i><i style="animation-duration:.55s"></i><i style="animation-duration:1s"></i><i style="animation-duration:.75s"></i>
-              </div>
-            </div>
+            <img class="shot" src="assets/liveplan-shot.png" alt="" loading="lazy" width="1180" height="800">
           </div>
         </div>
         <div class="work-info">
           <h3 class="wt">🎤 LivePlan</h3>
           <p class="wd">
             行きたいライブの予定を登録・検索・管理できる Web アプリ。
-            カード一覧・カレンダー・参戦統計ダッシュボードを搭載。
+            カード一覧・カレンダー・参戦統計ダッシュボードを搭載し、
+            PWA としてスマホでもオフラインで動作。
             Java（Servlet / JSP）＋ MySQL 版から HTML / CSS / JavaScript ＋ JSON へ
             フルスクラッチで移植しました。
           </p>
           <ul class="chips">
             <li>HTML / CSS / JS</li>
             <li>JSON</li>
+            <li>PWA</li>
             <li>localStorage</li>
             <li>Java から移植</li>
-            <li>自作カレンダー</li>
           </ul>
           <div class="work-links">
             <span class="go">デモを見る <span class="ar">→</span></span>
@@ -1028,6 +1111,7 @@
     <!-- ================= Contact ================= -->
     <section class="block" id="contact">
       <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">CONTACT</span>
         <span class="sec-no">04</span>
         <h2 class="sec-title">連絡先</h2>
         <span class="sec-sub">CONTACT</span>
@@ -1060,12 +1144,30 @@
     (() => {
       "use strict";
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const fine = matchMedia("(pointer: fine)").matches;
       const $ = (s, el = document) => el.querySelector(s);
       const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
       /* ---------- ローディング ---------- */
-      window.addEventListener("load", () => $("#loader").classList.add("done"));
-      setTimeout(() => $("#loader").classList.add("done"), 1200); // 保険
+      window.addEventListener("load", () => {
+        $("#loader").classList.add("done");
+        try { sessionStorage.setItem("visited", "1"); } catch (_) {}
+      });
+      setTimeout(() => $("#loader").classList.add("done"), 1400); // 保険
+
+      /* ---------- ハンバーガーメニュー ---------- */
+      const menuBtn = $("#menuBtn");
+      const mobileMenu = $("#mobileMenu");
+      function setMenu(open) {
+        menuBtn.classList.toggle("open", open);
+        mobileMenu.classList.toggle("open", open);
+        menuBtn.setAttribute("aria-expanded", String(open));
+        menuBtn.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+      }
+      menuBtn.addEventListener("click", () => setMenu(!mobileMenu.classList.contains("open")));
+      $$("#mobileMenu a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+      addEventListener("resize", () => { if (innerWidth > 760) setMenu(false); }, { passive: true });
 
       /* ---------- タイピング ---------- */
       const phrases = [
@@ -1099,7 +1201,7 @@
         eq.appendChild(bar);
       }
 
-      /* ---------- マーキー（トラック複製で無限ループ） ---------- */
+      /* ---------- マーキー ---------- */
       const track = $("#marqueeTrack");
       track.innerHTML += track.innerHTML;
       const clone = track.cloneNode(true);
@@ -1140,7 +1242,7 @@
       }, { threshold: 0.6 });
       $$("[data-count]").forEach((el) => cio.observe(el));
 
-      /* ---------- ナビ：スクロールで枠線 + スクロールスパイ ---------- */
+      /* ---------- ナビ（スクロールスパイ） ---------- */
       const nav = $("#nav");
       const links = $$(".nav-link");
       const sections = links.map((a) => $(a.getAttribute("href")));
@@ -1154,7 +1256,7 @@
       }, { rootMargin: "-42% 0px -52% 0px" });
       sections.forEach((s) => s && spy.observe(s));
 
-      /* ---------- スクロール進捗・トップへ戻る ---------- */
+      /* ---------- スクロール進捗・トップへ ---------- */
       const progress = $("#progress");
       const toTop = $("#toTop");
       addEventListener("scroll", () => {
@@ -1166,31 +1268,153 @@
       }, { passive: true });
       toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }));
 
-      /* ---------- カーソル追従グロー（PC・reduced-motion 無効時のみ） ---------- */
+      /* ---------- カスタムカーソル＋グロー（PC のみ・アイドル時停止） ---------- */
       const glow = $("#cursorGlow");
-      if (matchMedia("(pointer: fine)").matches && !reduced) {
-        let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
-        addEventListener("pointermove", (e) => {
-          tx = e.clientX; ty = e.clientY;
-          glow.style.opacity = 1;
-        }, { passive: true });
-        (function loop() {
+      const dot = $("#curDot");
+      const ring = $("#curRing");
+      if (fine && !reduced) {
+        document.body.classList.add("cursor-on");
+        let tx = innerWidth / 2, ty = innerHeight / 2;
+        let gx = tx, gy = ty, rx = tx, ry = ty;
+        let rafId = null, lastMove = 0;
+
+        function loop() {
           gx += (tx - gx) * 0.09;
           gy += (ty - gy) * 0.09;
+          rx += (tx - rx) * 0.22;
+          ry += (ty - ry) * 0.22;
           glow.style.left = gx + "px";
           glow.style.top = gy + "px";
-          requestAnimationFrame(loop);
-        })();
+          ring.style.left = rx + "px";
+          ring.style.top = ry + "px";
+          if (performance.now() - lastMove > 2600) {
+            glow.style.opacity = 0;
+            rafId = null;
+            return;
+          }
+          rafId = requestAnimationFrame(loop);
+        }
+        addEventListener("pointermove", (e) => {
+          tx = e.clientX; ty = e.clientY;
+          lastMove = performance.now();
+          dot.style.left = tx + "px";
+          dot.style.top = ty + "px";
+          dot.style.opacity = 1;
+          ring.style.opacity = 1;
+          glow.style.opacity = 1;
+          if (rafId === null) rafId = requestAnimationFrame(loop);
+        }, { passive: true });
+        document.addEventListener("pointerleave", () => {
+          dot.style.opacity = 0;
+          ring.style.opacity = 0;
+        });
+        // リンク・ボタンの上でリングを拡大
+        document.addEventListener("pointerover", (e) => {
+          ring.classList.toggle("grow", !!e.target.closest("a, button"));
+        });
       }
 
-      /* ---------- カードの 3D チルト（PC のみ） ---------- */
-      if (matchMedia("(pointer: fine)").matches && !reduced) {
+      /* ---------- 星空キャンバス（流れ星つき） ---------- */
+      const canvas = $("#stars");
+      const ctx = canvas.getContext("2d");
+      let stars = [], W = 0, H = 0, mx = 0, my = 0;
+      const DPR = Math.min(devicePixelRatio || 1, 2);
+
+      function initStars() {
+        W = innerWidth; H = innerHeight;
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        const n = Math.min(110, Math.round((W * H) / 16000));
+        stars = Array.from({ length: n }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          z: 0.3 + Math.random() * 0.7,          // 奥行き（視差・速度・明るさに使用）
+          r: 0.4 + Math.random() * 1.1,
+          p: Math.random() * Math.PI * 2,          // またたき位相
+          s: 0.5 + Math.random() * 1.5,            // またたき速度
+        }));
+      }
+
+      let shoot = null, nextShoot = performance.now() + 4000 + Math.random() * 5000;
+
+      function drawStars(t) {
+        ctx.clearRect(0, 0, W, H);
+        const px = (mx - W / 2) / W, py = (my - H / 2) / H;
+        for (const st of stars) {
+          st.y -= 0.018 * st.z;                    // ゆっくり上へ漂う
+          if (st.y < -4) { st.y = H + 4; st.x = Math.random() * W; }
+          const tw = 0.55 + 0.45 * Math.sin(t / 900 * st.s + st.p);
+          ctx.globalAlpha = 0.18 + 0.5 * st.z * tw;
+          ctx.fillStyle = st.z > 0.75 ? "#cfd8ff" : "#ffffff";
+          ctx.beginPath();
+          ctx.arc(st.x - px * 26 * st.z, st.y - py * 18 * st.z, st.r * st.z, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // 流れ星
+        if (!shoot && t > nextShoot) {
+          shoot = {
+            x: W * (0.15 + Math.random() * 0.7),
+            y: H * (0.05 + Math.random() * 0.25),
+            vx: -(4 + Math.random() * 3),
+            vy: 2 + Math.random() * 1.5,
+            life: 1,
+          };
+        }
+        if (shoot) {
+          shoot.x += shoot.vx * 3;
+          shoot.y += shoot.vy * 3;
+          shoot.life -= 0.022;
+          if (shoot.life <= 0) {
+            shoot = null;
+            nextShoot = t + 5000 + Math.random() * 7000;
+          } else {
+            const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x - shoot.vx * 16, shoot.y - shoot.vy * 16);
+            g.addColorStop(0, `rgba(255,255,255,${0.85 * shoot.life})`);
+            g.addColorStop(1, "rgba(255,255,255,0)");
+            ctx.strokeStyle = g;
+            ctx.lineWidth = 1.6;
+            ctx.globalAlpha = 1;
+            ctx.beginPath();
+            ctx.moveTo(shoot.x, shoot.y);
+            ctx.lineTo(shoot.x - shoot.vx * 16, shoot.y - shoot.vy * 16);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+        if (!reduced) requestAnimationFrame(drawStars);
+      }
+
+      initStars();
+      addEventListener("resize", () => { initStars(); if (reduced) drawStars(0); }, { passive: true });
+      if (reduced) {
+        drawStars(0); // 一度だけ静的に描画
+      } else {
+        addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+        requestAnimationFrame(drawStars);
+      }
+
+      /* ---------- マグネットボタン ---------- */
+      if (fine && !reduced) {
+        $$(".btn").forEach((b) => {
+          b.addEventListener("pointermove", (e) => {
+            const r = b.getBoundingClientRect();
+            const dx = (e.clientX - r.left - r.width / 2) / r.width;
+            const dy = (e.clientY - r.top - r.height / 2) / r.height;
+            b.style.translate = `${dx * 8}px ${dy * 6}px`;
+          });
+          b.addEventListener("pointerleave", () => { b.style.translate = ""; });
+        });
+      }
+
+      /* ---------- カードの 3D チルト ---------- */
+      if (fine && !reduced) {
         $$(".skill, .work-feature").forEach((card) => {
           card.addEventListener("pointermove", (e) => {
             const r = card.getBoundingClientRect();
-            const rx = ((e.clientY - r.top) / r.height - 0.5) * -5;
-            const ry = ((e.clientX - r.left) / r.width - 0.5) * 5;
-            card.style.transform = `translateY(-6px) perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+            const rxDeg = ((e.clientY - r.top) / r.height - 0.5) * -5;
+            const ryDeg = ((e.clientX - r.left) / r.width - 0.5) * 5;
+            card.style.transform = `translateY(-6px) perspective(700px) rotateX(${rxDeg}deg) rotateY(${ryDeg}deg)`;
           });
           card.addEventListener("pointerleave", () => { card.style.transform = ""; });
         });

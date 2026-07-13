@@ -29,6 +29,7 @@
   /* チャート（validate_palette.js 検証済み / surface #171327） */
   --chart-1: #3987e5;
   --chart-2: #199e70;
+  --chart-3: #c98500;
 
   --radius: 14px;
   --radius-sm: 9px;
@@ -214,6 +215,41 @@ body {
   padding: 3px 11px;
 }
 
+/* データメニュー（ドロップダウン） */
+.menu-wrap { position: relative; }
+.menu-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 150;
+  min-width: 230px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-3);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow);
+  animation: fadeSlideIn 0.18s ease both;
+}
+.menu-pop button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 500;
+  padding: 9px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.menu-pop button:hover { background: rgba(255, 255, 255, 0.08); }
+.menu-pop button.danger { color: #f87171; }
+.menu-pop button.danger:hover { background: rgba(239, 68, 68, 0.12); }
+.menu-pop hr { border: none; border-top: 1px solid var(--border); margin: 6px 4px; }
+
 /* ビュー切替タブ */
 .view-tabs {
   display: flex;
@@ -287,6 +323,7 @@ main { padding: 32px 0 90px; }
   margin-bottom: 18px;
 }
 .filter-bar .field { display: flex; flex-direction: column; gap: 5px; }
+.filter-bar .field-search { grid-column: 1 / -1; }
 .filter-bar label { font-size: 0.74rem; color: var(--text-3); font-weight: 600; letter-spacing: 0.05em; }
 .filter-actions { display: flex; align-items: flex-end; gap: 8px; }
 
@@ -565,7 +602,9 @@ textarea { resize: vertical; }
   transition: filter 0.15s;
 }
 .bar-row .bar:hover { filter: brightness(1.25); }
+.bar-row .bar.bar-c3 { background: var(--chart-3); }
 .bar-row .bar-val { font-size: 0.78rem; font-weight: 700; color: var(--text-2); }
+.chart-empty { color: var(--text-3); font-size: 0.85rem; }
 @keyframes growH { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* ------------------------------------------------------------

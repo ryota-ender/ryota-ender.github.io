@@ -36,7 +36,7 @@
   /* ---------------- 状態 ---------------- */
   let schedules = [];
   let dataSource = "sample"; // 'private' | 'sample' | 'browser'
-  const filters = { artist: "", status: "", liveType: "", year: "", month: "" };
+  const filters = { q: "", artist: "", status: "", liveType: "", year: "", month: "" };
   let sortKey = "asc"; // 'asc' | 'desc' | 'artist'
   let currentView = "list"; // 'list' | 'cal' | 'stats'
 
@@ -139,7 +139,13 @@
 
   /* ---------------- 絞り込み・並び替え（旧 ScheduleDAO 相当） ---------------- */
   function filteredSchedules() {
+    const q = filters.q.toLowerCase();
     return schedules.filter((s) => {
+      if (q) {
+        const hay = [s.artistName, s.liveTitle, s.venue, s.memo, s.coArtists, s.setlist]
+          .join("\n").toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
       if (filters.artist && s.artistName !== filters.artist) return false;
       if (filters.status === "upcoming" && statusOf(s) === "past") return false;
       if (filters.status === "past" && statusOf(s) !== "past") return false;
@@ -222,9 +228,21 @@
     ["#fArtist", "#fStatus", "#fType", "#fYear", "#fMonth"].forEach((id) =>
       $(id).addEventListener("change", apply)
     );
+
+    // フリーワード検索（入力のたびに絞り込み・軽いデバウンス付き）
+    let qTimer;
+    $("#fSearch").addEventListener("input", (e) => {
+      clearTimeout(qTimer);
+      qTimer = setTimeout(() => {
+        filters.q = e.target.value.trim();
+        renderList();
+      }, 120);
+    });
+
     $("#fClear").addEventListener("click", () => {
       Object.keys(filters).forEach((k) => (filters[k] = ""));
       $$("#filterBar select").forEach((s) => (s.value = ""));
+      $("#fSearch").value = "";
       renderList();
     });
 
@@ -414,6 +432,29 @@
         </div>
         <span class="bar-val">${count}</span>
       </div>`).join("");
+
+    // 会場別 TOP10（横棒）
+    const byVenue = {};
+    for (const s of schedules) {
+      const v = (s.venue || "").trim();
+      if (!v) continue;
+      byVenue[v] = (byVenue[v] || 0) + 1;
+    }
+    const venues = Object.entries(byVenue)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ja"))
+      .slice(0, 10);
+    const maxV = Math.max(...venues.map(([, c]) => c), 1);
+    $("#venueChart").innerHTML = venues.length
+      ? venues.map(([name, count], i) => `
+        <div class="bar-row">
+          <span class="bar-label" title="${h(name)}">${h(name)}</span>
+          <div class="bar-track">
+            <div class="bar bar-c3" style="width:${(count / maxV) * 100}%;animation-delay:${i * 0.05}s"
+                 title="${h(name)}: ${count} 回"></div>
+          </div>
+          <span class="bar-val">${count}</span>
+        </div>`).join("")
+      : '<p class="chart-empty">会場データがまだありません。</p>';
   }
 
   /* ---------------- ビュー切替 ---------------- */
@@ -428,15 +469,36 @@
     try { localStorage.setItem(VIEW_KEY, v); } catch (_) {}
   }
 
-  /* ---------------- モーダル共通 ---------------- */
-  function openModal(id) {
-    $(id).classList.add("show");
-    document.body.style.overflow = "hidden";
+  /* ---------------- モーダル共通（フォーカス管理付き） ---------------- */
+  let lastFocus = null;
+
+  function focusables(root) {
+    return $$("button, [href], input, select, textarea", root)
+      .filter((el) => !el.disabled && !el.hidden && el.offsetParent !== null);
   }
+
+  function openModal(id) {
+    const bk = $(id);
+    if (!bk.classList.contains("show")) lastFocus = document.activeElement;
+    bk.classList.add("show");
+    document.body.style.overflow = "hidden";
+    // 開いたモーダル内へフォーカスを移す
+    setTimeout(() => {
+      const panel = $(".modal-panel", bk);
+      const target = focusables(panel).find((el) => !el.classList.contains("modal-close")) || panel;
+      target.focus({ preventScroll: true });
+    }, 60);
+  }
+
   function closeModal(id) {
     $(id).classList.remove("show");
-    document.body.style.overflow = "";
+    if (!$(".modal-backdrop.show")) {
+      document.body.style.overflow = "";
+      if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
+      lastFocus = null;
+    }
   }
+
   function bindModalBasics() {
     $$(".modal-backdrop").forEach((bk) => {
       bk.addEventListener("click", (e) => {
@@ -444,7 +506,25 @@
       });
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") $$(".modal-backdrop.show").forEach((bk) => closeModal("#" + bk.id));
+      if (e.key === "Escape") {
+        $$(".modal-backdrop.show").forEach((bk) => closeModal("#" + bk.id));
+        return;
+      }
+      // Tab キーをモーダル内に閉じ込める（フォーカストラップ）
+      if (e.key !== "Tab") return;
+      const open = $$(".modal-backdrop.show").pop();
+      if (!open) return;
+      const f = focusables(open);
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
     $$("[data-close]").forEach((btn) =>
       btn.addEventListener("click", () => closeModal(btn.dataset.close))
@@ -641,28 +721,162 @@
     $("#btnDupOk").addEventListener("click", doRegister);
   }
 
-  /* ---------------- 書き出し・初期化 ---------------- */
+  /* ---------------- データメニュー（書き出し・読み込み・iCal・初期化） ---------------- */
+  function download(content, filename, mime) {
+    const blob = new Blob([content], { type: mime });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  /* iCal (RFC 5545) 生成 */
+  function icsEscape(v) {
+    return String(v ?? "")
+      .replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n");
+  }
+  function icsFold(line) {
+    // 仕様上 1 行は 75 オクテット以内。マルチバイトを考慮して 40 文字で折り返す
+    const out = [];
+    let s = line;
+    while (s.length > 40) {
+      out.push(s.slice(0, 40));
+      s = " " + s.slice(40);
+    }
+    out.push(s);
+    return out.join("\r\n");
+  }
+  function buildIcs() {
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//LivePlan//ryota-ender.github.io//JA",
+      "CALSCALE:GREGORIAN",
+    ];
+    for (const s of schedules) {
+      const d = s.liveDate.replace(/-/g, "");
+      lines.push("BEGIN:VEVENT");
+      lines.push(`UID:liveplan-${s.id}@ryota-ender.github.io`);
+      lines.push(`DTSTAMP:${stamp}`);
+      if (s.startTime) {
+        const start = new Date(`${s.liveDate}T${s.startTime}:00`);
+        const end = new Date(start.getTime() + 2 * 3600 * 1000); // 終了未管理のため 2 時間で仮置き
+        const fmt = (x) =>
+          `${x.getFullYear()}${String(x.getMonth() + 1).padStart(2, "0")}${String(x.getDate()).padStart(2, "0")}` +
+          `T${String(x.getHours()).padStart(2, "0")}${String(x.getMinutes()).padStart(2, "0")}00`;
+        lines.push(`DTSTART:${fmt(start)}`);
+        lines.push(`DTEND:${fmt(end)}`);
+      } else {
+        const next = new Date(new Date(s.liveDate).getTime() + 86400000);
+        const nd = `${next.getFullYear()}${String(next.getMonth() + 1).padStart(2, "0")}${String(next.getDate()).padStart(2, "0")}`;
+        lines.push(`DTSTART;VALUE=DATE:${d}`);
+        lines.push(`DTEND;VALUE=DATE:${nd}`);
+      }
+      lines.push(icsFold(`SUMMARY:${icsEscape(`${s.artistName} / ${s.liveTitle}`)}`));
+      if (s.venue) lines.push(icsFold(`LOCATION:${icsEscape(s.venue)}`));
+      const descParts = [];
+      if (s.openTime) descParts.push(`開場 ${s.openTime}`);
+      if (s.coArtists) descParts.push(`共演: ${s.coArtists}`);
+      if (s.memo) descParts.push(s.memo);
+      if (descParts.length) lines.push(icsFold(`DESCRIPTION:${icsEscape(descParts.join("\n"))}`));
+      lines.push("END:VEVENT");
+    }
+    lines.push("END:VCALENDAR");
+    return lines.join("\r\n") + "\r\n";
+  }
+
+  /* 取り込み JSON の検証・正規化 */
+  function normalizeImported(arr) {
+    if (!Array.isArray(arr)) return null;
+    const ok = arr.filter(
+      (x) =>
+        x && typeof x.artistName === "string" && x.artistName.trim() &&
+        typeof x.liveTitle === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(x.liveDate || "")
+    );
+    if (!ok.length) return null;
+    let seq = 0;
+    return ok.map((x) => ({
+      id: ++seq,
+      artistName: x.artistName.trim(),
+      liveTitle: x.liveTitle,
+      liveDate: x.liveDate,
+      openTime: x.openTime || "",
+      startTime: x.startTime || "",
+      venue: x.venue || "",
+      memo: x.memo || "",
+      liveType: x.liveType || "",
+      coArtists: x.coArtists || "",
+      setlist: x.setlist || "",
+      image: x.image || "",
+    }));
+  }
+
   function bindDataTools() {
-    // 現在のデータを JSON ダウンロード（data/schedules.json を更新する用）
+    const menuBtn = $("#btnDataMenu");
+    const menu = $("#dataMenu");
+
+    const setMenu = (open) => {
+      menu.hidden = !open;
+      menuBtn.setAttribute("aria-expanded", String(open));
+    };
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setMenu(menu.hidden);
+    });
+    document.addEventListener("click", (e) => {
+      if (!menu.hidden && !menu.contains(e.target)) setMenu(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setMenu(false);
+    });
+
+    // JSON 書き出し（data/schedules.json を更新する用）
     $("#btnExport").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(schedules, null, 2)], {
-        type: "application/json",
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "schedules.json";
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast("JSON を書き出しました");
+      download(JSON.stringify(schedules, null, 2), "schedules.json", "application/json");
+      setMenu(false);
+      toast("JSON を書き出しました ⬇");
+    });
+
+    // JSON 読み込み（書き出したファイルの復元・他ブラウザからの引っ越し）
+    $("#btnImport").addEventListener("click", () => {
+      setMenu(false);
+      $("#importFile").click();
+    });
+    $("#importFile").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      try {
+        const imported = normalizeImported(JSON.parse(await file.text()));
+        if (!imported) throw new Error("invalid");
+        if (!confirm(`${imported.length} 件のスケジュールを読み込みます。現在の表示データは置き換わります。よろしいですか？`)) return;
+        schedules = imported;
+        persist();
+        refreshAll();
+        toast(`${schedules.length} 件を読み込みました 📂`);
+      } catch {
+        toast("読み込めませんでした（JSON の形式を確認してください）");
+      }
+    });
+
+    // iCal 書き出し（iPhone / Google カレンダーへの取り込み用）
+    $("#btnIcs").addEventListener("click", () => {
+      download(buildIcs(), "liveplan.ics", "text/calendar;charset=utf-8");
+      setMenu(false);
+      toast("iCal を書き出しました 📅");
     });
 
     // ブラウザ保存分を消して JSON から再読込
     $("#btnReset").addEventListener("click", async () => {
+      setMenu(false);
       if (!confirm("ブラウザに保存した編集内容を消して、JSON ファイルの内容に戻します。よろしいですか？")) return;
       localStorage.removeItem(STORAGE_KEY);
       await loadData();
       refreshAll();
-      renderFilterOptions();
       renderDataBadge();
       toast("初期化しました");
     });
@@ -704,6 +918,14 @@
       setView(hashView);
     } else {
       setView(savedView === "cal" || savedView === "stats" ? savedView : "list");
+    }
+
+    // PWA: Service Worker 登録（https または localhost のみ）
+    if (
+      "serviceWorker" in navigator &&
+      (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname))
+    ) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
     }
   });
 })();

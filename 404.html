@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | Ryota</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+      background: #0c0914;
+      color: #f0eef8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .b1 { width: 50vmax; height: 50vmax; background: #8b5cf6; top: -20vmax; left: -14vmax; }
+    .b2 { width: 44vmax; height: 44vmax; background: #0ea5b7; bottom: -18vmax; right: -12vmax; }
+    h1 {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: clamp(5rem, 22vw, 10rem);
+      line-height: 1;
+      background: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    p { color: #aaa5c0; margin: 18px 0 34px; animation: rise 0.7s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .links { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: rise 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    a {
+      display: inline-flex;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .grad { background: linear-gradient(120deg, #a78bfa, #22d3ee); color: #fff; }
+    .grad:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.45); }
+    .ghost { border: 1px solid rgba(255, 255, 255, 0.2); color: #f0eef8; }
+    .ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.08); }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <h1>404</h1>
+  <p>お探しのページは見つかりませんでした。<br>移動したか、削除された可能性があります。</p>
+  <div class="links">
+    <a class="grad" href="/">🏠 トップへ戻る</a>
+    <a class="ghost" href="/liveplan/">🎤 LivePlan を見る</a>
+  </div>
+</body>
+</html>

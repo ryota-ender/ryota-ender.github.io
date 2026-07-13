@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LivePlan | ライブスケジュール管理</title>
   <meta name="description" content="行きたいライブの予定を登録・検索・管理できる Web アプリ（HTML/CSS/JavaScript 製）">
+  <meta name="theme-color" content="#0e0b16">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,8 +27,17 @@
       </a>
       <div class="header-actions">
         <span class="data-badge" id="dataBadge">📦 読込中…</span>
-        <button class="btn btn-sm" id="btnExport" title="現在のデータを JSON ファイルとしてダウンロード">⬇ 書き出し</button>
-        <button class="btn btn-sm" id="btnReset" title="ブラウザ保存分を消して JSON から再読込">↺ 初期化</button>
+        <div class="menu-wrap">
+          <button class="btn btn-sm" id="btnDataMenu" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dataMenu">🗂 データ ▾</button>
+          <div class="menu-pop" id="dataMenu" hidden>
+            <button type="button" id="btnExport">⬇ JSON 書き出し</button>
+            <button type="button" id="btnImport">📂 JSON 読み込み</button>
+            <button type="button" id="btnIcs">📅 iCal (.ics) 書き出し</button>
+            <hr>
+            <button type="button" id="btnReset" class="danger">↺ 初期化（JSON に戻す）</button>
+          </div>
+          <input type="file" id="importFile" accept=".json,application/json" hidden>
+        </div>
         <a class="btn btn-sm" href="../">← 自己紹介へ</a>
       </div>
     </div>
@@ -56,6 +70,10 @@
     <section id="listView">
 
       <div class="filter-bar card-surface" id="filterBar">
+        <div class="field field-search">
+          <label for="fSearch">フリーワード検索</label>
+          <input type="text" id="fSearch" placeholder="タイトル・会場・メモ・共演…">
+        </div>
         <div class="field">
           <label for="fArtist">アーティスト名</label>
           <select id="fArtist"></select>
@@ -160,6 +178,11 @@
           <h3>アーティスト別の参戦数</h3>
           <div class="bar-chart-h" id="artistChart"></div>
         </div>
+
+        <div class="chart-card card-surface">
+          <h3>会場別の参戦数 TOP10</h3>
+          <div class="bar-chart-h" id="venueChart"></div>
+        </div>
       </div>
     </section>
 
@@ -174,7 +197,7 @@
 
   <!-- ================= 詳細モーダル（詳細 / 編集 / 削除確認） ================= -->
   <div class="modal-backdrop" id="detailModal">
-    <div class="modal-panel" role="dialog" aria-modal="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" tabindex="-1">
       <div class="modal-head">
         <h2 id="detailTitle">スケジュール詳細</h2>
         <button class="modal-close" data-close="#detailModal" aria-label="閉じる">×</button>
@@ -186,7 +209,7 @@
 
   <!-- ================= 新規登録モーダル ================= -->
   <div class="modal-backdrop" id="newModal">
-    <div class="modal-panel" role="dialog" aria-modal="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" tabindex="-1">
       <div class="modal-head">
         <h2>新規スケジュール登録</h2>
         <button class="modal-close" data-close="#newModal" aria-label="閉じる">×</button>
@@ -203,7 +226,7 @@
 
   <!-- ================= 重複登録の警告モーダル ================= -->
   <div class="modal-backdrop" id="dupModal">
-    <div class="modal-panel" role="dialog" aria-modal="true" style="max-width:460px;">
+    <div class="modal-panel" role="dialog" aria-modal="true" tabindex="-1" style="max-width:460px;">
       <div class="modal-head">
         <h2>重複登録の確認</h2>
         <button class="modal-close" data-close="#dupModal" aria-label="閉じる">×</button>
