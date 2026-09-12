@@ -27,7 +27,7 @@
     "jobTitle": "Software Developer (Learning)"
   }
   </script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230c0914'/><text x='50' y='54' text-anchor='middle' dominant-baseline='central' font-family='Helvetica,Arial,sans-serif' font-size='62' font-weight='700' fill='%23f0eef8'>R</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -264,30 +264,26 @@
       background: var(--grad);
     }
 
-    /* ハンバーガー */
+    /* メニューボタン（テキスト） */
     .menu-btn {
       display: none;
-      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      gap: 5px;
-      width: 42px;
-      height: 42px;
-      padding: 10px;
+      min-width: 76px;
+      height: 38px;
+      padding: 0 16px;
       border: 1px solid var(--border-strong);
-      border-radius: 12px;
+      border-radius: 999px;
       background: rgba(255, 255, 255, 0.04);
+      color: var(--text-2);
+      font-family: var(--font-en);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       cursor: pointer;
+      transition: color 0.25s, background 0.25s, border-color 0.25s;
     }
-    .menu-btn span {
-      display: block;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--text);
-      transition: transform 0.3s var(--ease), opacity 0.2s;
-    }
-    .menu-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .menu-btn.open span:nth-child(2) { opacity: 0; }
-    .menu-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .menu-btn:hover, .menu-btn.open { color: var(--text); background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.3); }
 
     .mobile-menu {
       display: none;
@@ -327,8 +323,8 @@
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      font-size: 0.76rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
       font-weight: 700;
       color: var(--text-2);
       border: 1px solid var(--border-strong);
@@ -337,16 +333,6 @@
       padding: 6px 16px;
       backdrop-filter: blur(8px);
     }
-    .pill .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #34d399;
-      box-shadow: 0 0 10px #34d399;
-      animation: blink 2.2s ease-in-out infinite;
-    }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-
     .avatar-wrap { position: relative; width: 148px; height: 148px; margin-bottom: 30px; animation-delay: 0.08s; }
     .avatar-wrap::before {
       content: "";
@@ -526,7 +512,7 @@
       padding: 0 28px;
       white-space: nowrap;
     }
-    .marquee span em { font-style: normal; color: var(--violet); padding-right: 28px; }
+    .marquee span em { font-style: normal; color: var(--violet); padding: 0 26px; opacity: 0.85; }
     @keyframes scroll-x { to { transform: translateX(-100%); } }
 
     /* ============ セクション共通 ============ */
@@ -594,10 +580,21 @@
       inset: 0;
       background: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.16), transparent 65%);
     }
-    .about-side .big-emoji { font-size: 3.2rem; line-height: 1; filter: drop-shadow(0 6px 18px rgba(167, 139, 250, 0.5)); }
-    .about-side .name-en { font-family: var(--font-en); font-weight: 800; font-size: 1.3rem; letter-spacing: 0.04em; }
-    .about-side .name-jp { color: var(--text-3); font-size: 0.78rem; font-weight: 500; }
-    .about-side .tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .about-side .name-en {
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      position: relative;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .about-side .rule { width: 40px; height: 2px; border-radius: 2px; background: var(--grad); opacity: 0.9; position: relative; margin: 14px 0 12px; }
+    .about-side .name-jp { color: var(--text-3); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; position: relative; }
+    .about-side .tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-top: 16px; position: relative; }
     .about-side .tags span {
       font-size: 0.7rem;
       font-weight: 700;
@@ -645,10 +642,12 @@
     .tl-item p { font-size: 0.85rem; color: var(--text-2); }
 
     /* ============ Skills ============ */
-    .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 16px; }
+    .skill-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
     .skill {
       position: relative;
-      padding: 24px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 14px 20px;
       text-align: center;
       overflow: hidden;
       transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
@@ -664,124 +663,48 @@
     }
     .skill:hover { transform: translateY(-6px); border-color: rgba(167, 139, 250, 0.55); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45), 0 0 24px rgba(167, 139, 250, 0.2); }
     .skill:hover::before { opacity: 1; }
-    .skill .icon { font-size: 1.9rem; display: block; margin-bottom: 10px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
-    .skill .name { font-family: var(--font-en); font-weight: 800; font-size: 0.94rem; letter-spacing: 0.02em; }
-    .skill .note { font-size: 0.72rem; color: var(--text-3); margin-top: 3px; }
-    .skill .bar { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); margin-top: 14px; overflow: hidden; }
+    .skill .lv {
+      display: block;
+      position: relative;
+      font-family: var(--font-en);
+      font-weight: 800;
+      font-size: 1.75rem;
+      line-height: 1;
+      margin-bottom: 12px;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .skill .lv small { font-size: 0.55em; font-weight: 800; margin-left: 1px; }
+    .skill .name { font-family: var(--font-en); font-weight: 800; font-size: 0.88rem; letter-spacing: 0; position: relative; }
+    .skill .note { font-size: 0.7rem; line-height: 1.6; color: var(--text-3); margin-top: 4px; position: relative; }
+    .skill .bar { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); margin-top: auto; overflow: hidden; position: relative; }
     .skill .bar i {
       display: block;
       height: 100%;
+      min-width: 0;
       width: 0;
       border-radius: 3px;
       background: var(--grad);
       transition: width 1.1s var(--ease) 0.15s;
     }
     .skill.shown .bar i { width: var(--lv); }
+    .skill .note { margin-bottom: 16px; }
 
     /* ============ Works ============ */
-    @property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-
-    .work-feature {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.3s var(--ease), box-shadow 0.3s;
-      will-change: transform;
-    }
-    /* ホバーで回転するグラデーション枠 */
-    .work-feature::before {
+    .works-lead { padding: 44px 38px; position: relative; overflow: hidden; }
+    .works-lead::before {
       content: "";
       position: absolute;
       inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: conic-gradient(from var(--ang), rgba(167, 139, 250, 0.9), rgba(34, 211, 238, 0.7), rgba(244, 114, 182, 0.85), rgba(167, 139, 250, 0.9));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      animation: spinborder 5s linear infinite;
-      opacity: 0;
-      transition: opacity 0.4s;
+      background: radial-gradient(circle at 14% 0%, rgba(34, 211, 238, 0.13), transparent 62%);
       pointer-events: none;
-      z-index: 1;
     }
-    .work-feature:hover::before { opacity: 1; }
-    @keyframes spinborder { to { --ang: 360deg; } }
-    .work-feature:hover { transform: translateY(-6px); box-shadow: var(--shadow), 0 0 34px rgba(34, 211, 238, 0.18); }
-
-    .mock {
-      background: linear-gradient(150deg, rgba(167, 139, 250, 0.14), rgba(34, 211, 238, 0.08));
-      border-right: 1px solid var(--border);
-      padding: 30px 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .mock .window {
-      width: 100%;
-      max-width: 430px;
-      border-radius: 12px;
-      background: #120e1e;
-      border: 1px solid var(--border-strong);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-      overflow: hidden;
-      transform: rotate(-1.6deg);
-      transition: transform 0.4s var(--ease);
-    }
-    .work-feature:hover .mock .window { transform: rotate(0deg) scale(1.04); }
-    .mock .bar-top {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 12px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .mock .bar-top i { width: 9px; height: 9px; border-radius: 50%; display: block; }
-    .mock .bar-top i:nth-child(1) { background: #ff5f57; }
-    .mock .bar-top i:nth-child(2) { background: #febc2e; }
-    .mock .bar-top i:nth-child(3) { background: #28c840; }
-    .mock .bar-top .url {
-      margin-left: 8px;
-      flex: 1;
-      font-size: 0.62rem;
-      color: var(--text-3);
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 5px;
-      padding: 2px 10px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    .mock .shot { display: block; width: 100%; height: auto; }
-
-    .work-info { padding: 32px 34px; display: flex; flex-direction: column; }
-    .work-info .wt { font-family: var(--font-en); font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-    .work-info .wd { color: var(--text-2); font-size: 0.9rem; margin: 12px 0 18px; flex: 1; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-bottom: 22px; }
-    .chips li {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #cabffa;
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid rgba(139, 92, 246, 0.38);
-      border-radius: 999px;
-      padding: 3px 13px;
-    }
-    .work-links { display: flex; gap: 12px; flex-wrap: wrap; }
-    .work-links .go { font-weight: 700; font-size: 0.86rem; color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
-    .work-links .go .ar { transition: translate 0.25s var(--ease); }
-    .work-feature:hover .go .ar { translate: 5px; }
-
-    .work-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
-    .work-sub { padding: 26px 28px; text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), border-color 0.3s; }
-    .work-sub:hover { transform: translateY(-5px); border-color: rgba(167, 139, 250, 0.5); }
-    .work-sub h3 { font-size: 1.02rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
-    .work-sub p { font-size: 0.84rem; color: var(--text-2); margin-top: 7px; }
-    .work-sub.soon { border-style: dashed; opacity: 0.75; }
-    .work-sub.soon h3 { color: var(--text-2); }
+    .works-lead .label { font-family: var(--font-en); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.2em; color: var(--cyan); position: relative; }
+    .works-lead h3 { font-size: 1.2rem; font-weight: 700; margin: 10px 0; position: relative; }
+    .works-lead p { color: var(--text-2); font-size: 0.9rem; position: relative; max-width: 62ch; }
+    .works-lead .btn { margin-top: 26px; position: relative; }
 
     /* ============ Contact ============ */
     .contact-card { position: relative; padding: 56px 36px; text-align: center; overflow: hidden; }
@@ -837,14 +760,17 @@
       right: 22px;
       bottom: 22px;
       z-index: 150;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+      height: 38px;
+      padding: 0 18px;
+      border-radius: 999px;
       border: 1px solid var(--border-strong);
       background: rgba(22, 17, 36, 0.85);
       backdrop-filter: blur(10px);
-      color: var(--text);
-      font-size: 1.1rem;
+      color: var(--text-2);
+      font-family: var(--font-en);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
@@ -852,7 +778,7 @@
       transition: opacity 0.3s, translate 0.3s var(--ease), box-shadow 0.3s;
     }
     .to-top.show { opacity: 1; pointer-events: auto; translate: 0 0; }
-    .to-top:hover { box-shadow: 0 0 22px rgba(139, 92, 246, 0.45); }
+    .to-top:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 0 22px rgba(139, 92, 246, 0.35); }
 
     .toast {
       position: fixed;
@@ -874,13 +800,17 @@
 
     /* ============ レスポンシブ ============ */
     @media (max-width: 760px) {
-      .about-grid, .work-feature, .work-sub-grid { grid-template-columns: 1fr; }
-      .mock { border-right: none; border-bottom: 1px solid var(--border); }
+      .about-grid { grid-template-columns: 1fr; }
       .nav ul { display: none; }
       .menu-btn { display: flex; }
       .mobile-menu { display: block; }
       .hero-stats { gap: 30px; }
+      .skill-grid { grid-template-columns: repeat(2, 1fr); }
       .ghost { font-size: clamp(3.4rem, 18vw, 5.4rem); }
+    }
+
+    @media (max-width: 980px) and (min-width: 761px) {
+      .skill-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (hover: none) {
@@ -934,9 +864,7 @@
         <li><a class="nav-link" href="#works">Works</a></li>
         <li><a class="nav-link" href="#contact">Contact</a></li>
       </ul>
-      <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu">MENU</button>
     </div>
     <div class="container">
       <div class="mobile-menu" id="mobileMenu">
@@ -951,9 +879,9 @@
   <!-- ================= Hero ================= -->
   <header class="hero container" id="top">
     <div class="status-pills">
-      <span class="pill"><span class="dot"></span>Learning Software Development</span>
-      <span class="pill">📍 Japan</span>
-      <span class="pill">🎧 Live Music Lover</span>
+      <span class="pill">Learning Software Development</span>
+      <span class="pill">Based in Japan</span>
+      <span class="pill">Live Music Lover</span>
     </div>
 
     <div class="avatar-wrap">
@@ -967,8 +895,8 @@
     <p class="tagline"><span class="type-caret" id="typeTarget"></span></p>
 
     <div class="cta">
-      <a class="btn btn-grad" href="#works">作品を見る 🎧</a>
-      <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-grad" href="#works">作品を見る</a>
+      <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
     </div>
 
     <div class="hero-stats">
@@ -986,7 +914,7 @@
   <div class="marquee-tilt" aria-hidden="true">
     <div class="marquee">
       <div class="track" id="marqueeTrack">
-        <span>JAVA<em> ✦</em>MYSQL<em> ✦</em>JAVASCRIPT<em> ✦</em>HTML / CSS<em> ✦</em>PYTHON<em> ✦</em>FLASK<em> ✦</em>GIT & GITHUB<em> ✦</em>LIVE MUSIC<em> ✦</em></span>
+        <span>JAVA<em>/</em>MYSQL<em>/</em>JAVASCRIPT<em>/</em>HTML &amp; CSS<em>/</em>PYTHON<em>/</em>FLASK<em>/</em>GIT<em>/</em>LIVE MUSIC<em>/</em></span>
       </div>
     </div>
   </div>
@@ -1004,9 +932,9 @@
 
       <div class="about-grid">
         <div class="card about-side reveal">
-          <span class="big-emoji">🎤</span>
           <span class="name-en">Ryota</span>
-          <span class="name-jp">Software Developer (Learning)</span>
+          <span class="rule" aria-hidden="true"></span>
+          <span class="name-jp">SOFTWARE DEVELOPER</span>
           <div class="tags">
             <span>Web アプリ</span><span>DB 設計</span><span>フェス好き</span>
           </div>
@@ -1031,8 +959,8 @@
             </div>
             <div class="tl-item reveal">
               <span class="step">STEP 03</span>
-              <h3>HTML / CSS / JavaScript に移植して公開</h3>
-              <p>SQL を JSON に置き換え、PWA として GitHub Pages で公開</p>
+              <h3>HTML / CSS / JavaScript でフロントエンドへ</h3>
+              <p>個人開発を続けながら、よりモダンな構成での作り直しにも取り組み中</p>
             </div>
           </div>
         </div>
@@ -1049,12 +977,12 @@
       </div>
 
       <div class="skill-grid">
-        <div class="card skill reveal" style="--lv: 78%"><span class="icon">☕</span><span class="name">Java</span><div class="note">Servlet / JSP / MVC</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 72%"><span class="icon">🐬</span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 74%"><span class="icon">🌐</span><span class="name">HTML / CSS</span><div class="note">レスポンシブ / アニメーション</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 68%"><span class="icon">⚡</span><span class="name">JavaScript</span><div class="note">Vanilla JS / PWA</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 60%"><span class="icon">🐍</span><span class="name">Python</span><div class="note">Flask</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 70%"><span class="icon">🔧</span><span class="name">Git / GitHub</span><div class="note">バージョン管理 / Pages</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 78%"><span class="lv">78<small>%</small></span><span class="name">Java</span><div class="note">Servlet / JSP / MVC</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 72%"><span class="lv">72<small>%</small></span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 74%"><span class="lv">74<small>%</small></span><span class="name">HTML / CSS</span><div class="note">レスポンシブ / アニメーション</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 68%"><span class="lv">68<small>%</small></span><span class="name">JavaScript</span><div class="note">Vanilla JS / PWA</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 60%"><span class="lv">60<small>%</small></span><span class="name">Python</span><div class="note">Flask</div><div class="bar"><i></i></div></div>
+        <div class="card skill reveal" style="--lv: 70%"><span class="lv">70<small>%</small></span><span class="name">Git / GitHub</span><div class="note">バージョン管理 / Pages</div><div class="bar"><i></i></div></div>
       </div>
     </section>
 
@@ -1067,45 +995,13 @@
         <span class="sec-sub">WORKS</span>
       </div>
 
-      <a class="card work-feature reveal" href="liveplan/">
-        <div class="mock" aria-hidden="true">
-          <div class="window">
-            <div class="bar-top"><i></i><i></i><i></i><span class="url">ryota-ender.github.io/liveplan</span></div>
-            <img class="shot" src="assets/liveplan-shot.png" alt="" loading="lazy" width="1180" height="800">
-          </div>
-        </div>
-        <div class="work-info">
-          <h3 class="wt">🎤 LivePlan</h3>
-          <p class="wd">
-            行きたいライブの予定を登録・検索・管理できる Web アプリ。
-            カード一覧・カレンダー・参戦統計ダッシュボードを搭載し、
-            PWA としてスマホでもオフラインで動作。
-            Java（Servlet / JSP）＋ MySQL 版から HTML / CSS / JavaScript ＋ JSON へ
-            フルスクラッチで移植しました。
-          </p>
-          <ul class="chips">
-            <li>HTML / CSS / JS</li>
-            <li>JSON</li>
-            <li>PWA</li>
-            <li>localStorage</li>
-            <li>Java から移植</li>
-          </ul>
-          <div class="work-links">
-            <span class="go">デモを見る <span class="ar">→</span></span>
-          </div>
-        </div>
-      </a>
-
-      <div class="work-sub-grid">
-        <a class="card work-sub reveal" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">
-          <h3>📦 その他のリポジトリ</h3>
-          <p>Flask アプリや学習用プロジェクトなど、その他の制作物は GitHub で公開しています。</p>
-        </a>
-        <div class="card work-sub soon reveal">
-          <h3>🚧 Coming Soon</h3>
-          <p>次の作品を製作中…。お楽しみに。</p>
-        </div>
+      <div class="card works-lead reveal">
+        <span class="label">IN PROGRESS</span>
+        <h3>作品は現在整理中です</h3>
+        <p>これまで作ってきたものを GitHub 側でまとめ直しています。準備ができ次第、このページにも順次追加していきます。</p>
+        <a class="btn btn-ghost" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">GitHub のリポジトリを見る</a>
       </div>
+
     </section>
 
     <!-- ================= Contact ================= -->
@@ -1118,12 +1014,12 @@
       </div>
 
       <div class="card contact-card reveal">
-        <h3>Let's Connect!</h3>
+        <h3>Let's Connect</h3>
         <p>お仕事・学習仲間・ライブ仲間、なんでもお気軽にどうぞ。</p>
         <div class="contact-links">
-          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">✉ メールを送る</a>
-          <button class="btn btn-ghost" id="copyMail" type="button">📋 アドレスをコピー</button>
-          <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">メールを送る</a>
+          <button class="btn btn-ghost" id="copyMail" type="button">アドレスをコピー</button>
+          <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </section>
@@ -1137,7 +1033,7 @@
     </div>
   </footer>
 
-  <button class="to-top" id="toTop" aria-label="ページ上部へ戻る">↑</button>
+  <button class="to-top" id="toTop" aria-label="ページ上部へ戻る">TOP</button>
   <div class="toast" id="toast" role="status"></div>
 
   <script>
@@ -1163,6 +1059,7 @@
         mobileMenu.classList.toggle("open", open);
         menuBtn.setAttribute("aria-expanded", String(open));
         menuBtn.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+        menuBtn.textContent = open ? "CLOSE" : "MENU";
       }
       menuBtn.addEventListener("click", () => setMenu(!mobileMenu.classList.contains("open")));
       $$("#mobileMenu a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
@@ -1173,7 +1070,7 @@
       const phrases = [
         "ソフトウェア開発を学んでいます",
         "Java / MySQL / Web フロントエンド",
-        "ライブとフェスが原動力です 🎶",
+        "ライブとフェスが原動力です",
       ];
       const typeEl = $("#typeTarget");
       if (reduced) {
@@ -1409,7 +1306,7 @@
 
       /* ---------- カードの 3D チルト ---------- */
       if (fine && !reduced) {
-        $$(".skill, .work-feature").forEach((card) => {
+        $$(".skill").forEach((card) => {
           card.addEventListener("pointermove", (e) => {
             const r = card.getBoundingClientRect();
             const rxDeg = ((e.clientY - r.top) / r.height - 0.5) * -5;
@@ -1431,7 +1328,7 @@
       $("#copyMail").addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText("ryota.akaba.0904@gmail.com");
-          showToast("メールアドレスをコピーしました ✅");
+          showToast("メールアドレスをコピーしました");
         } catch {
           showToast("コピーできませんでした");
         }

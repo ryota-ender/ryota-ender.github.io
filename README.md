@@ -7,57 +7,37 @@
 ## 構成
 
 ```
-├── index.html                  # 自己紹介ページ（トップ）
-├── 404.html                    # 404 ページ
+├── index.html      # 自己紹介ページ（トップ）
+├── 404.html        # 404 ページ
 ├── assets/
-│   ├── avatar.png              # プロフィール画像（ローカル配信）
-│   ├── ogp.png                 # SNS シェア用 OGP 画像（1200x630）
-│   └── liveplan-shot.png       # Works 用 LivePlan プレビュー（サンプルデータ版）
-├── liveplan/                   # LivePlan（ライブスケジュール管理）静的版・PWA
-│   ├── index.html              # 一覧・カレンダー・統計の SPA
-│   ├── css/style.css
-│   ├── js/app.js
-│   ├── manifest.webmanifest    # PWA マニフェスト
-│   ├── sw.js                   # Service Worker（オフライン対応）
-│   ├── icons/                  # PWA アイコン（192 / 512）
-│   └── data/
-│       ├── schedules.sample.json   # 公開用サンプルデータ（コミット対象）
-│       └── schedules.json          # 実データ（.gitignore 済み・非公開）
+│   ├── avatar.png  # プロフィール画像（ローカル配信）
+│   └── ogp.png     # SNS シェア用 OGP 画像（1200x630）
 └── .gitignore
 ```
 
-## LivePlan について
+外部依存はフォント（Google Fonts）のみで、HTML / CSS / JavaScript は
+`index.html` 1 ファイルにまとめてある。ビルド不要。
 
-もともと Java（Servlet / JSP）＋ MySQL で開発した Web アプリを、
-GitHub Pages で動くように HTML / CSS / JavaScript へ移植したもの。
+## デザイン方針
 
-| 元の実装 | 静的版での置き換え |
+- **絵文字・アイコンは使わない。** セクション見出し、ボタン、スキル欄などは
+  すべて文字・数値・罫線だけで構成する。矢印記号（↗ ↑ →）も使わない。
+- ファビコンも絵文字ではなく「R」の文字マーク（インライン SVG のデータ URI）。
+- 装飾は CSS のグラデーション・タイポグラフィ・余白で付ける。
+
+## セクション
+
+| セクション | 内容 |
 | --- | --- |
-| MySQL | JSON ファイル |
-| サーバー側での登録・更新・削除 | localStorage（ブラウザごとに保存） |
-| ログイン認証 | なし（個人用・デモ用のため省略） |
+| Hero | 名前・肩書き・タイピングアニメーション・数値サマリー |
+| About | 自己紹介文と学習の経緯（STEP 01〜03 のタイムライン） |
+| Skills | Java / MySQL / HTML・CSS / JavaScript / Python / Git（習熟度を数値とバーで表示） |
+| Works | 現在は「整理中」の案内のみ。掲載する作品は今後追加する |
+| Contact | メールリンク・アドレスのコピー・GitHub |
 
-### 主な機能
+`prefers-reduced-motion` を指定している環境では、アニメーションとカスタムカーソルを止める。
 
-- カード一覧（フリーワード検索・絞り込み・並び替え）
-- 自作カレンダー表示（`#cal` で直接開ける）
-- 統計ダッシュボード（年別・アーティスト別・会場別 TOP10、`#stats`）
-- 登録・編集・削除（モーダル、フォーカストラップ対応）
-- データメニュー：JSON 書き出し / JSON 読み込み / iCal (.ics) 書き出し / 初期化
-- **PWA 対応**：スマホでホーム画面に追加するとアプリとして起動し、オフラインでも動作
-
-### データの読み込み優先順位
-
-1. `localStorage`（ブラウザ上で編集した内容）
-2. `data/schedules.json`（実データ。ローカル環境にのみ存在）
-3. `data/schedules.sample.json`（公開サイトではこれが表示される）
-
-実データは `.gitignore` に登録してあるため GitHub には上がらず、
-公開サイトでは架空のサンプルデータが表示される。
-
-### ローカルでの確認方法
-
-`fetch` / Service Worker を使うため、簡易サーバーを起動して確認する：
+## ローカルでの確認方法
 
 ```bash
 cd ryota-ender.github.io
@@ -65,22 +45,7 @@ python3 -m http.server 8000
 # → http://localhost:8000 を開く
 ```
 
-### 実データの更新方法
+## 履歴
 
-1. ブラウザ上で登録・編集・削除する（localStorage に保存される）
-2. データメニューの「⬇ JSON 書き出し」で `schedules.json` をダウンロード
-3. `liveplan/data/schedules.json` を差し替える
-4. 「↺ 初期化」で localStorage を消すと JSON の内容に戻せる
-
-別のブラウザ・端末に移すときは「📂 JSON 読み込み」で書き出したファイルを取り込む。
-
-### iCal 書き出し
-
-データメニューの「📅 iCal (.ics) 書き出し」で全スケジュールをカレンダーファイルにできる。
-iPhone のカレンダーや Google カレンダーにそのまま取り込み可能
-（終了時刻は管理していないため開演 +2 時間で仮置き）。
-
-### Service Worker のキャッシュ更新
-
-`liveplan/sw.js` の `VERSION` を上げると、次回アクセス時に古いキャッシュが削除される。
-アプリ本体（HTML）とデータはネットワーク優先なので、通常は更新がそのまま反映される。
+- 2026-09-12: 絵文字・アイコンを全廃。LivePlan（静的版・PWA）をこのリポジトリから削除し、
+  Works セクションを作り直した。以降、掲載する作品は他リポジトリの制作物から選んで追加する。
