@@ -5,73 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 | Ryota</title>
   <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0c0914">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230c0914'/><text x='50' y='54' text-anchor='middle' dominant-baseline='central' font-family='Helvetica,Arial,sans-serif' font-size='62' font-weight='700' fill='%23f0eef8'>R</text></svg>">
+  <script>
+    /* トップページと同じ設定（配色・言語）を引き継ぐ */
+    (function () {
+      var d = document.documentElement;
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+        if (localStorage.getItem("lang") === "en") d.lang = "en";
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0c0914;
+      --text: #f0eef8;
+      --text-2: #aaa5c0;
+      --border: rgba(255, 255, 255, 0.2);
+      --border-hover: rgba(255, 255, 255, 0.34);
+      --fill-hover: rgba(255, 255, 255, 0.08);
+      --grad: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
+      --on-grad: #0c0914;
+      --glow: rgba(139, 92, 246, 0.42);
+      --blob-a: rgba(167, 139, 250, 0.26);
+      --blob-b: rgba(34, 211, 238, 0.18);
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        color-scheme: light;
+        --bg: #f6f5fa;
+        --text: #16121f;
+        --text-2: #474159;
+        --border: rgba(22, 18, 31, 0.18);
+        --border-hover: rgba(22, 18, 31, 0.32);
+        --fill-hover: rgba(22, 18, 31, 0.06);
+        --grad: linear-gradient(120deg, #6d4fd8, #0e7490 55%, #be185d);
+        --on-grad: #ffffff;
+        --glow: rgba(109, 79, 216, 0.28);
+        --blob-a: rgba(109, 79, 216, 0.14);
+        --blob-b: rgba(14, 116, 144, 0.1);
+      }
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f6f5fa;
+      --text: #16121f;
+      --text-2: #474159;
+      --border: rgba(22, 18, 31, 0.18);
+      --border-hover: rgba(22, 18, 31, 0.32);
+      --fill-hover: rgba(22, 18, 31, 0.06);
+      --grad: linear-gradient(120deg, #6d4fd8, #0e7490 55%, #be185d);
+      --on-grad: #ffffff;
+      --glow: rgba(109, 79, 216, 0.28);
+      --blob-a: rgba(109, 79, 216, 0.14);
+      --blob-b: rgba(14, 116, 144, 0.1);
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
-      background: #0c0914;
-      color: #f0eef8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
       padding: 24px;
       overflow: hidden;
-      position: relative;
+      background:
+        radial-gradient(40% 45% at 12% 8%, var(--blob-a), transparent 70%),
+        radial-gradient(38% 42% at 90% 94%, var(--blob-b), transparent 70%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", Meiryo, sans-serif;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-font-smoothing: antialiased;
     }
-    .blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.2;
-      pointer-events: none;
-    }
-    .b1 { width: 50vmax; height: 50vmax; background: #8b5cf6; top: -20vmax; left: -14vmax; }
-    .b2 { width: 44vmax; height: 44vmax; background: #0ea5b7; bottom: -18vmax; right: -12vmax; }
+    body:lang(ja) { word-break: auto-phrase; }
     h1 {
-      font-family: "Syne", sans-serif;
+      font-family: "Syne", system-ui, sans-serif;
       font-weight: 800;
       font-size: clamp(5rem, 22vw, 10rem);
       line-height: 1;
-      background: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
+      background: var(--grad);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
-    p { color: #aaa5c0; margin: 18px 0 34px; animation: rise 0.7s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
-    .links { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: rise 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    p { margin: 18px 0 34px; color: var(--text-2); line-height: 1.9; }
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
     a {
       display: inline-flex;
       padding: 12px 28px;
+      border: 1px solid transparent;
       border-radius: 999px;
       font-weight: 700;
       font-size: 0.92rem;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
     }
-    .grad { background: linear-gradient(120deg, #a78bfa, #22d3ee); color: #fff; }
-    .grad:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.45); }
-    .ghost { border: 1px solid rgba(255, 255, 255, 0.2); color: #f0eef8; }
-    .ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.08); }
-    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+    .grad { background: var(--grad); color: var(--on-grad); }
+    .grad:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--glow); }
+    .ghost { border-color: var(--border); color: var(--text); }
+    .ghost:hover { transform: translateY(-2px); background: var(--fill-hover); border-color: var(--border-hover); }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <h1>404</h1>
-  <p>お探しのページは見つかりませんでした。<br>移動したか、削除された可能性があります。</p>
-  <div class="links">
-    <a class="grad" href="/">トップへ戻る</a>
-    <a class="ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
-  </div>
+  <main>
+    <h1>404</h1>
+    <p data-en="The page you're looking for couldn't be found.<br>It may have been moved or deleted.">お探しのページは見つかりませんでした。<br>移動したか、削除された可能性があります。</p>
+    <div class="links">
+      <a class="grad" href="/" data-en="Back to top">トップへ戻る</a>
+      <a class="ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </main>
+  <script>
+    if (document.documentElement.lang === "en") {
+      document.title = "404 | Ryota";
+      document.querySelectorAll("[data-en]").forEach(function (n) { n.innerHTML = n.getAttribute("data-en"); });
+    }
+  </script>
 </body>
 </html>

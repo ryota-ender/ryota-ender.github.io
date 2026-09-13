@@ -1,2 +1,5 @@
 # macOS
 .DS_Store
+
+# Lighthouse CI をローカルで回したときの出力
+.lighthouseci/

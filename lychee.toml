@@ -1,0 +1,11 @@
+# リンクチェックの設定（.github/workflows/site-check.yml から使う）
+max_retries = 3
+timeout = 20
+# GitHub はアクセスが続くと 429 を返すことがあるので、リンク切れとは扱わない
+accept = ["200..=299", "429"]
+exclude = [
+  "^mailto:",
+  "^https://fonts\\.googleapis\\.com",
+  "^https://fonts\\.gstatic\\.com",
+  "^https://schema\\.org",
+]

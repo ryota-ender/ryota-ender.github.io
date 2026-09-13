@@ -4,17 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryota | Portfolio</title>
-  <meta name="description" content="Ryota のポートフォリオ。Java / MySQL / Web フロントエンドを学びながら、音楽ライブをテーマにしたアプリを作っています。">
-  <meta name="theme-color" content="#0e0b16">
+  <meta name="description" content="Ryota のポートフォリオ。Web アプリケーションの開発を学びながら、Next.js / TypeScript / Java で自分が使うためのアプリを作っています。">
+  <meta name="theme-color" content="#0c0914">
   <link rel="canonical" href="https://ryota-ender.github.io/">
+  <link rel="alternate" hreflang="ja" href="https://ryota-ender.github.io/">
+  <link rel="alternate" hreflang="en" href="https://ryota-ender.github.io/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://ryota-ender.github.io/">
   <meta property="og:title" content="Ryota | Portfolio">
-  <meta property="og:description" content="Java / MySQL / Web フロントエンドを学ぶ Ryota のポートフォリオ">
+  <meta property="og:description" content="Web アプリケーションの開発を学ぶ Ryota のポートフォリオ">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ryota-ender.github.io/">
   <meta property="og:image" content="https://ryota-ender.github.io/assets/ogp.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230c0914'/><text x='50' y='54' text-anchor='middle' dominant-baseline='central' font-family='Helvetica,Arial,sans-serif' font-size='62' font-weight='700' fill='%23f0eef8'>R</text></svg>">
   <link rel="apple-touch-icon" href="assets/avatar.png">
   <script type="application/ld+json">
   {
@@ -24,909 +30,129 @@
     "url": "https://ryota-ender.github.io/",
     "image": "https://ryota-ender.github.io/assets/avatar.png",
     "sameAs": ["https://github.com/ryota-ender"],
-    "jobTitle": "Software Developer (Learning)"
+    "jobTitle": "Software Developer",
+    "knowsAbout": ["Java", "MySQL", "Python", "Flask", "HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Git"]
   }
   </script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230c0914'/><text x='50' y='54' text-anchor='middle' dominant-baseline='central' font-family='Helvetica,Arial,sans-serif' font-size='62' font-weight='700' fill='%23f0eef8'>R</text></svg>">
+  <script>
+    /* 描画前にテーマと言語を決める（ちらつき防止） */
+    (function () {
+      var d = document.documentElement;
+      d.className += " js";
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+        var q = new URLSearchParams(location.search).get("lang");
+        var l = q === "en" || q === "ja" ? q : localStorage.getItem("lang");
+        if (l === "en") d.lang = "en";
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    /* ============================================================
-       Ryota Portfolio — v3
-       ============================================================ */
-    :root {
-      --bg: #0c0914;
-      --bg-2: #151021;
-      --panel: rgba(22, 17, 36, 0.72);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.16);
-      --text: #f0eef8;
-      --text-2: #aaa5c0;
-      --text-3: #6f6a86;
-      --violet: #a78bfa;
-      --cyan: #22d3ee;
-      --pink: #f472b6;
-      --grad: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
-      --font-jp: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
-      --font-en: "Syne", "Zen Kaku Gothic New", sans-serif;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --radius: 20px;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-jp);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.9;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    body.cursor-on, body.cursor-on a, body.cursor-on button { cursor: none; }
-
-    ::selection { background: rgba(167, 139, 250, 0.45); }
-    ::-webkit-scrollbar { width: 9px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #2c2544; border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3d3460; }
-    a, button { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
-
-    /* ============ ローディング ============ */
-    .loader {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      background: var(--bg);
-      transition: opacity 0.55s ease, visibility 0.55s;
-    }
-    .loader.done { opacity: 0; visibility: hidden; }
-    .loader .mark {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: 2.1rem;
-      letter-spacing: 0.06em;
-      background: var(--grad);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: shimmer 1.4s linear infinite;
-    }
-    .loader .line {
-      width: 120px;
-      height: 2px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-    }
-    .loader .line::after {
-      content: "";
-      display: block;
-      height: 100%;
-      width: 45%;
-      border-radius: 2px;
-      background: var(--grad);
-      animation: loadbar 1.1s var(--ease) infinite;
-    }
-    @keyframes loadbar { 0% { translate: -110% 0; } 100% { translate: 270% 0; } }
-
-    /* ============ 背景レイヤー ============ */
-    .bg-layer { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-    .aurora {
-      position: absolute;
-      width: 130vmax;
-      height: 130vmax;
-      top: 50%;
-      left: 50%;
-      translate: -50% -50%;
-      background:
-        radial-gradient(closest-side, rgba(167, 139, 250, 0.20), transparent 62%),
-        radial-gradient(closest-side, rgba(34, 211, 238, 0.13), transparent 60%);
-      background-position: 18% 22%, 78% 74%;
-      background-repeat: no-repeat;
-      background-size: 52% 52%, 46% 46%;
-      animation: aurora 34s var(--ease) infinite alternate;
-    }
-    @keyframes aurora {
-      0%   { rotate: 0deg;  scale: 1; }
-      100% { rotate: 40deg; scale: 1.22; }
-    }
-    #stars { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .bg-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
-      -webkit-mask-image: radial-gradient(ellipse 90% 62% at 50% 8%, #000 30%, transparent 78%);
-    }
-    .vignette {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 120% 90% at 50% 32%, transparent 55%, rgba(0, 0, 0, 0.42));
-    }
-    /* 粒状ノイズ */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      pointer-events: none;
-      opacity: 0.05;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    /* カーソル追従グロー */
-    .cursor-glow {
-      position: fixed;
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.16), transparent 62%);
-      translate: -50% -50%;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    /* カスタムカーソル（ドット＋リング） */
-    .cur-dot, .cur-ring {
-      position: fixed;
-      top: 0;
-      left: 0;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 600;
-      translate: -50% -50%;
-      opacity: 0;
-      mix-blend-mode: difference;
-    }
-    .cur-dot { width: 6px; height: 6px; background: #fff; }
-    .cur-ring {
-      width: 36px;
-      height: 36px;
-      border: 1.5px solid rgba(255, 255, 255, 0.75);
-      transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s;
-    }
-    .cur-ring.grow { width: 62px; height: 62px; }
-
-    /* スクロール進捗 */
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      width: 0%;
-      z-index: 200;
-      background: var(--grad);
-    }
-
-    .container { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
-
-    /* ============ ナビ ============ */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(12, 9, 20, 0.62);
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .nav.scrolled { border-color: var(--border); background: rgba(12, 9, 20, 0.82); }
-    .nav .inner { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; gap: 12px; }
-    .nav .logo {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .nav ul { display: flex; gap: 2px; list-style: none; }
-    .nav a.nav-link {
-      position: relative;
-      color: var(--text-2);
-      text-decoration: none;
-      font-size: 0.84rem;
-      font-weight: 700;
-      padding: 7px 15px;
-      border-radius: 999px;
-      transition: color 0.2s, background 0.2s;
-    }
-    .nav a.nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
-    .nav a.nav-link.active { color: var(--text); }
-    .nav a.nav-link.active::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: 1px;
-      translate: -50%;
-      width: 14px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--grad);
-    }
-
-    /* メニューボタン（テキスト） */
-    .menu-btn {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      min-width: 76px;
-      height: 38px;
-      padding: 0 16px;
-      border: 1px solid var(--border-strong);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-2);
-      font-family: var(--font-en);
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      cursor: pointer;
-      transition: color 0.25s, background 0.25s, border-color 0.25s;
-    }
-    .menu-btn:hover, .menu-btn.open { color: var(--text); background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.3); }
-
-    .mobile-menu {
-      display: none;
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.4s var(--ease), opacity 0.3s;
-    }
-    .mobile-menu.open { max-height: 320px; opacity: 1; }
-    .mobile-menu a {
-      display: block;
-      padding: 15px 4px;
-      color: var(--text-2);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border-top: 1px solid var(--border);
-      transition: color 0.2s, padding-left 0.2s;
-    }
-    .mobile-menu a:hover { color: var(--text); padding-left: 10px; }
-    .mobile-menu a span { color: var(--cyan); font-family: var(--font-en); font-size: 0.72rem; margin-right: 12px; }
-
-    /* ============ ヒーロー ============ */
-    .hero {
-      min-height: calc(100svh - 60px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 48px 0 90px;
-      position: relative;
-    }
-    .hero > * { animation: rise 0.9s var(--ease) both; }
-
-    .status-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      font-size: 0.72rem;
-      letter-spacing: 0.04em;
-      font-weight: 700;
-      color: var(--text-2);
-      border: 1px solid var(--border-strong);
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 999px;
-      padding: 6px 16px;
-      backdrop-filter: blur(8px);
-    }
-    .avatar-wrap { position: relative; width: 148px; height: 148px; margin-bottom: 30px; animation-delay: 0.08s; }
-    .avatar-wrap::before {
-      content: "";
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #a78bfa, #22d3ee, #f472b6, #a78bfa);
-      animation: spin 7s linear infinite;
-    }
-    .avatar-wrap::after {
-      content: "";
-      position: absolute;
-      inset: -22px;
-      border-radius: 50%;
-      border: 1px dashed rgba(255, 255, 255, 0.14);
-      animation: spin 26s linear infinite reverse;
-    }
-    .avatar-wrap img {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid var(--bg);
-      display: block;
-    }
-    .avatar-wrap .orbit-dot {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 10px;
-      height: 10px;
-      margin: -5px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-      animation: orbit 7s linear infinite;
-    }
-    @keyframes orbit {
-      from { transform: rotate(0deg)   translateX(96px); }
-      to   { transform: rotate(360deg) translateX(96px); }
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* 行マスク（下からスライドで現れる見出し） */
-    .line-mask { display: block; overflow: hidden; }
-    .line-mask .line-in {
-      display: block;
-      translate: 0 108%;
-      animation: lineUp 1s var(--ease) forwards;
-    }
-    @keyframes lineUp { to { translate: 0 0; } }
-
-    .hero h1 {
-      font-family: var(--font-en);
-      font-size: clamp(2.7rem, 8vw, 4.6rem);
-      font-weight: 800;
-      line-height: 1.16;
-      letter-spacing: 0.01em;
-      text-wrap: balance;
-      animation-delay: 0.16s;
-    }
-    .hero h1 .grad {
-      background: var(--grad);
-      background-size: 220% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: shimmer 5s linear infinite;
-    }
-    @keyframes shimmer {
-      from { background-position: 0% 0; }
-      to   { background-position: 220% 0; }
-    }
-
-    .hero .tagline { margin-top: 16px; color: var(--text-2); font-size: 1.02rem; min-height: 1.9em; animation-delay: 0.24s; }
-    .type-caret { border-right: 2px solid var(--cyan); padding-right: 3px; }
-
-    .hero .cta { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; justify-content: center; animation-delay: 0.32s; }
-
-    .btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 13px 30px;
-      border-radius: 999px;
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.92rem;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, translate 0.2s ease-out;
-      will-change: transform, translate;
-    }
-    .btn-grad { background: var(--grad); background-size: 160% 100%; color: #fff; }
-    .btn-grad:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 34px rgba(139, 92, 246, 0.45); background-position: 80% 0; }
-    .btn-ghost {
-      border: 1px solid var(--border-strong);
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(8px);
-    }
-    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.3); }
-
-    .hero-stats { display: flex; gap: clamp(26px, 6vw, 64px); margin-top: 52px; animation-delay: 0.4s; }
-    .hstat { text-align: center; }
-    .hstat .num {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      line-height: 1.2;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hstat .lbl { font-size: 0.74rem; color: var(--text-3); font-weight: 700; letter-spacing: 0.08em; }
-
-    .equalizer { display: flex; align-items: flex-end; gap: 4px; height: 34px; margin-top: 46px; opacity: 0.7; animation-delay: 0.48s; }
-    .equalizer span {
-      width: 4px;
-      border-radius: 3px 3px 0 0;
-      background: var(--grad);
-      background-size: 100% 300%;
-      transform-origin: bottom;
-      animation: eq 1s ease-in-out infinite alternate;
-    }
-    @keyframes eq { from { transform: scaleY(0.18); } to { transform: scaleY(1); } }
-
-    .scroll-cue {
-      position: absolute;
-      bottom: 22px;
-      left: 50%;
-      translate: -50%;
-      color: var(--text-3);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-decoration: none;
-      writing-mode: vertical-rl;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      animation: rise 0.9s 0.6s var(--ease) both;
-    }
-    .scroll-cue::after {
-      content: "";
-      width: 1px;
-      height: 42px;
-      background: linear-gradient(var(--text-3), transparent);
-      animation: cueline 1.8s ease-in-out infinite;
-    }
-    @keyframes cueline { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
-    @keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ============ マーキー（斜めのリボン） ============ */
-    .marquee-tilt { rotate: -1.6deg; scale: 1.04; margin: 34px 0; }
-    .marquee {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      overflow: hidden;
-      padding: 15px 0;
-      display: flex;
-      user-select: none;
-    }
-    .marquee .track { display: flex; flex-shrink: 0; min-width: 100%; animation: scroll-x 30s linear infinite; }
-    .marquee:hover .track { animation-play-state: paused; }
-    .marquee span {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: 0.92rem;
-      letter-spacing: 0.22em;
-      color: var(--text-3);
-      padding: 0 28px;
-      white-space: nowrap;
-    }
-    .marquee span em { font-style: normal; color: var(--violet); padding: 0 26px; opacity: 0.85; }
-    @keyframes scroll-x { to { transform: translateX(-100%); } }
-
-    /* ============ セクション共通 ============ */
-    section.block { padding: 108px 0 12px; scroll-margin-top: 60px; }
-    .sec-head { position: relative; display: flex; align-items: baseline; gap: 18px; margin-bottom: 44px; flex-wrap: wrap; }
-    .ghost {
-      position: absolute;
-      left: -10px;
-      top: 50%;
-      translate: 0 -60%;
-      z-index: -1;
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: clamp(4.2rem, 14vw, 8.2rem);
-      letter-spacing: 0.05em;
-      line-height: 1;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
-      user-select: none;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-    .sec-no { font-family: var(--font-en); font-weight: 800; font-size: 0.9rem; color: var(--cyan); letter-spacing: 0.12em; }
-    .sec-title { font-size: clamp(1.7rem, 4.5vw, 2.3rem); font-weight: 700; letter-spacing: 0.02em; position: relative; }
-    .sec-title::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -10px;
-      width: 52px;
-      height: 4px;
-      border-radius: 2px;
-      background: var(--grad);
-    }
-    .sec-sub { color: var(--text-3); font-size: 0.82rem; font-weight: 500; margin-left: auto; }
-
-    .reveal { opacity: 0; transform: translateY(38px); transition: opacity 0.8s ease, transform 0.8s var(--ease); }
-    .reveal.shown { opacity: 1; transform: none; }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    /* ============ About ============ */
-    .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 22px; align-items: stretch; }
-    .about-side {
-      padding: 30px 26px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    .about-side::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.16), transparent 65%);
-    }
-    .about-side .name-en {
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: clamp(2rem, 6vw, 2.5rem);
-      letter-spacing: 0.03em;
-      line-height: 1.1;
-      position: relative;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .about-side .rule { width: 40px; height: 2px; border-radius: 2px; background: var(--grad); opacity: 0.9; position: relative; margin: 14px 0 12px; }
-    .about-side .name-jp { color: var(--text-3); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; position: relative; }
-    .about-side .tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-top: 16px; position: relative; }
-    .about-side .tags span {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--text-2);
-      border: 1px solid var(--border-strong);
-      border-radius: 999px;
-      padding: 2px 11px;
-    }
-    .about-main { padding: 32px 36px; font-size: 0.96rem; }
-    .about-main p + p { margin-top: 13px; }
-    .about-main .hl {
-      font-weight: 700;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .timeline { margin-top: 26px; display: grid; }
-    .tl-item { position: relative; padding: 0 0 26px 34px; }
-    .tl-item::before {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 8px;
-      bottom: -4px;
-      width: 1px;
-      background: linear-gradient(rgba(167, 139, 250, 0.6), rgba(34, 211, 238, 0.25));
-    }
-    .tl-item:last-child::before { display: none; }
-    .tl-item::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 6px;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 3px solid var(--violet);
-      box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
-    }
-    .tl-item .step { font-family: var(--font-en); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.18em; color: var(--cyan); }
-    .tl-item h3 { font-size: 0.98rem; font-weight: 700; margin: 2px 0; }
-    .tl-item p { font-size: 0.85rem; color: var(--text-2); }
-
-    /* ============ Skills ============ */
-    .skill-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-    .skill {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding: 24px 14px 20px;
-      text-align: center;
-      overflow: hidden;
-      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
-      will-change: transform;
-    }
-    .skill::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% -30%, rgba(167, 139, 250, 0.22), transparent 62%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .skill:hover { transform: translateY(-6px); border-color: rgba(167, 139, 250, 0.55); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45), 0 0 24px rgba(167, 139, 250, 0.2); }
-    .skill:hover::before { opacity: 1; }
-    .skill .lv {
-      display: block;
-      position: relative;
-      font-family: var(--font-en);
-      font-weight: 800;
-      font-size: 1.75rem;
-      line-height: 1;
-      margin-bottom: 12px;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .skill .lv small { font-size: 0.55em; font-weight: 800; margin-left: 1px; }
-    .skill .name { font-family: var(--font-en); font-weight: 800; font-size: 0.88rem; letter-spacing: 0; position: relative; }
-    .skill .note { font-size: 0.7rem; line-height: 1.6; color: var(--text-3); margin-top: 4px; position: relative; }
-    .skill .bar { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); margin-top: auto; overflow: hidden; position: relative; }
-    .skill .bar i {
-      display: block;
-      height: 100%;
-      min-width: 0;
-      width: 0;
-      border-radius: 3px;
-      background: var(--grad);
-      transition: width 1.1s var(--ease) 0.15s;
-    }
-    .skill.shown .bar i { width: var(--lv); }
-    .skill .note { margin-bottom: 16px; }
-
-    /* ============ Works ============ */
-    .works-lead { padding: 44px 38px; position: relative; overflow: hidden; }
-    .works-lead::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 14% 0%, rgba(34, 211, 238, 0.13), transparent 62%);
-      pointer-events: none;
-    }
-    .works-lead .label { font-family: var(--font-en); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.2em; color: var(--cyan); position: relative; }
-    .works-lead h3 { font-size: 1.2rem; font-weight: 700; margin: 10px 0; position: relative; }
-    .works-lead p { color: var(--text-2); font-size: 0.9rem; position: relative; max-width: 62ch; }
-    .works-lead .btn { margin-top: 26px; position: relative; }
-
-    /* ============ Contact ============ */
-    .contact-card { position: relative; padding: 56px 36px; text-align: center; overflow: hidden; }
-    .contact-card::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(120deg, rgba(167, 139, 250, 0.7), rgba(34, 211, 238, 0.5), rgba(244, 114, 182, 0.55));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-    .contact-card::after {
-      content: "";
-      position: absolute;
-      width: 60%;
-      height: 130%;
-      top: -60%;
-      left: 20%;
-      background: radial-gradient(closest-side, rgba(167, 139, 250, 0.22), transparent);
-      pointer-events: none;
-    }
-    .contact-card h3 {
-      font-family: var(--font-en);
-      font-size: clamp(1.6rem, 5vw, 2.3rem);
-      font-weight: 800;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .contact-card p { color: var(--text-2); margin: 12px 0 28px; font-size: 0.92rem; position: relative; }
-    .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; }
-
-    /* ============ フッター ============ */
-    footer { margin-top: 110px; border-top: 1px solid var(--border); padding: 30px 0; }
-    footer .inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      color: var(--text-3);
-      font-size: 0.78rem;
-    }
-    footer .f-logo { font-family: var(--font-en); font-weight: 800; color: var(--text-2); }
-
-    .to-top {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 150;
-      height: 38px;
-      padding: 0 18px;
-      border-radius: 999px;
-      border: 1px solid var(--border-strong);
-      background: rgba(22, 17, 36, 0.85);
-      backdrop-filter: blur(10px);
-      color: var(--text-2);
-      font-family: var(--font-en);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      translate: 0 12px;
-      transition: opacity 0.3s, translate 0.3s var(--ease), box-shadow 0.3s;
-    }
-    .to-top.show { opacity: 1; pointer-events: auto; translate: 0 0; }
-    .to-top:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 0 22px rgba(139, 92, 246, 0.35); }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 30px;
-      translate: -50% 16px;
-      z-index: 300;
-      background: var(--bg-2);
-      border: 1px solid var(--border-strong);
-      border-radius: 999px;
-      padding: 10px 24px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s, translate 0.25s var(--ease);
-    }
-    .toast.show { opacity: 1; translate: -50% 0; }
-
-    /* ============ レスポンシブ ============ */
-    @media (max-width: 760px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .nav ul { display: none; }
-      .menu-btn { display: flex; }
-      .mobile-menu { display: block; }
-      .hero-stats { gap: 30px; }
-      .skill-grid { grid-template-columns: repeat(2, 1fr); }
-      .ghost { font-size: clamp(3.4rem, 18vw, 5.4rem); }
-    }
-
-    @media (max-width: 980px) and (min-width: 761px) {
-      .skill-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (hover: none) {
-      .cur-dot, .cur-ring { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1; transform: none; }
-      .type-caret { border-right: none; }
-      .cursor-glow, .cur-dot, .cur-ring { display: none; }
-      .line-mask .line-in { translate: 0 0; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#main" data-i18n="skip">本文へスキップ</a>
 
-  <!-- ローディング（同一セッションの再訪時は即スキップ） -->
-  <div class="loader" id="loader" aria-hidden="true">
-    <span class="mark">Ryota</span>
-    <span class="line"></span>
-  </div>
-  <script>
-    try { if (sessionStorage.getItem("visited")) document.getElementById("loader").classList.add("done"); } catch (_) {}
-  </script>
-
-  <!-- 背景 -->
   <div class="bg-layer" aria-hidden="true">
     <div class="aurora"></div>
     <canvas id="stars"></canvas>
-    <div class="bg-grid"></div>
-    <div class="vignette"></div>
   </div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
-  <div class="cur-ring" id="curRing" aria-hidden="true"></div>
-  <div class="cur-dot" id="curDot" aria-hidden="true"></div>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
-  <!-- ナビ -->
-  <nav class="nav" id="nav">
+  <!-- ================= ナビ ================= -->
+  <nav class="nav" id="nav" aria-label="メイン" data-i18n-aria="nav_label">
     <div class="container inner">
       <a class="logo" href="#top">Ryota</a>
-      <ul>
+      <ul class="nav-links">
         <li><a class="nav-link" href="#about">About</a></li>
         <li><a class="nav-link" href="#skills">Skills</a></li>
         <li><a class="nav-link" href="#works">Works</a></li>
+        <li><a class="nav-link" href="#music">Music</a></li>
+        <li data-career-link hidden><a class="nav-link" href="#career">Career</a></li>
         <li><a class="nav-link" href="#contact">Contact</a></li>
       </ul>
+      <div class="prefs">
+        <div class="seg" role="group" aria-label="表示言語" data-i18n-aria="lang_label">
+          <button type="button" data-set-lang="ja" lang="ja" aria-pressed="true">JA</button>
+          <button type="button" data-set-lang="en" lang="en" aria-pressed="false">EN</button>
+        </div>
+        <div class="seg" role="group" aria-label="配色" data-i18n-aria="theme_label">
+          <button type="button" data-set-theme="light" aria-pressed="false">LIGHT</button>
+          <button type="button" data-set-theme="dark" aria-pressed="true">DARK</button>
+        </div>
+      </div>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu">MENU</button>
     </div>
     <div class="container">
       <div class="mobile-menu" id="mobileMenu">
-        <a href="#about"><span>01</span>About — 自己紹介</a>
-        <a href="#skills"><span>02</span>Skills — スキル</a>
-        <a href="#works"><span>03</span>Works — 作品</a>
-        <a href="#contact"><span>04</span>Contact — 連絡先</a>
+        <a href="#about"><span class="no">01</span>About</a>
+        <a href="#skills"><span class="no">02</span>Skills</a>
+        <a href="#works"><span class="no">03</span>Works</a>
+        <a href="#music"><span class="no">04</span>Music</a>
+        <a href="#career" data-career-link hidden><span class="no">05</span>Career</a>
+        <a href="#contact"><span class="no">05</span>Contact</a>
+        <div class="prefs">
+          <div class="seg" role="group" aria-label="表示言語" data-i18n-aria="lang_label">
+            <button type="button" data-set-lang="ja" lang="ja" aria-pressed="true">JA</button>
+            <button type="button" data-set-lang="en" lang="en" aria-pressed="false">EN</button>
+          </div>
+          <div class="seg" role="group" aria-label="配色" data-i18n-aria="theme_label">
+            <button type="button" data-set-theme="light" aria-pressed="false">LIGHT</button>
+            <button type="button" data-set-theme="dark" aria-pressed="true">DARK</button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- ================= Hero ================= -->
+  <!-- ================= ヒーロー ================= -->
   <header class="hero container" id="top">
-    <div class="status-pills">
-      <span class="pill">Learning Software Development</span>
-      <span class="pill">Based in Japan</span>
-      <span class="pill">Live Music Lover</span>
+    <ul class="status-pills">
+      <li class="pill">Software Developer</li>
+      <li class="pill">Based in Japan</li>
+      <li class="pill">Live Music Lover</li>
+    </ul>
+
+    <div class="avatar">
+      <img src="assets/avatar.png" alt="Ryota のプロフィール画像" data-i18n-alt="avatar_alt" width="148" height="148">
     </div>
 
-    <div class="avatar-wrap">
-      <img src="assets/avatar.png" alt="Ryota のプロフィール画像" width="148" height="148">
-      <span class="orbit-dot" aria-hidden="true"></span>
-    </div>
-
-    <h1>
-      <span class="line-mask"><span class="line-in" style="animation-delay:0.25s">Hi, I'm <span class="grad">Ryota</span></span></span>
-    </h1>
-    <p class="tagline"><span class="type-caret" id="typeTarget"></span></p>
+    <h1>Hi, I'm <span class="grad">Ryota</span></h1>
+    <p class="tagline">
+      <span class="sr-only" id="typeSr">Web アプリケーションを作っています / Next.js / TypeScript / Java / ライブとフェスが原動力です</span>
+      <span class="type-caret" id="typeTarget" aria-hidden="true">Web アプリケーションを作っています</span>
+    </p>
 
     <div class="cta">
-      <a class="btn btn-grad" href="#works">作品を見る</a>
+      <a class="btn btn-grad" id="heroCta" href="#about">プロフィールを見る</a>
       <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
     </div>
 
-    <div class="hero-stats">
-      <div class="hstat"><div class="num" data-count="5" data-suffix="+">0</div><div class="lbl">PROJECTS</div></div>
-      <div class="hstat"><div class="num" data-count="6" data-suffix="">0</div><div class="lbl">SKILLS</div></div>
-      <div class="hstat"><div class="num" data-count="50" data-suffix="+">0</div><div class="lbl">LIVES</div></div>
-    </div>
+    <dl class="hero-stats">
+      <div class="hstat"><dt>SKILLS</dt><dd id="statSkills">12</dd></div>
+      <div class="hstat"><dt>LIVES</dt><dd id="statLives">48</dd></div>
+      <div class="hstat"><dt>VENUES</dt><dd id="statVenues">34</dd></div>
+    </dl>
 
     <div class="equalizer" id="equalizer" aria-hidden="true"></div>
 
-    <a class="scroll-cue" href="#about" aria-label="下へスクロール">SCROLL</a>
+    <a class="scroll-cue" href="#about" aria-label="下へスクロール" data-i18n-aria="scroll_label">SCROLL</a>
   </header>
 
-  <!-- マーキー -->
-  <div class="marquee-tilt" aria-hidden="true">
-    <div class="marquee">
-      <div class="track" id="marqueeTrack">
-        <span>JAVA<em>/</em>MYSQL<em>/</em>JAVASCRIPT<em>/</em>HTML &amp; CSS<em>/</em>PYTHON<em>/</em>FLASK<em>/</em>GIT<em>/</em>LIVE MUSIC<em>/</em></span>
-      </div>
-    </div>
-  </div>
-
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
 
     <!-- ================= About ================= -->
-    <section class="block" id="about">
+    <section class="block" id="about" aria-labelledby="about-title">
       <div class="sec-head reveal">
         <span class="ghost" aria-hidden="true">ABOUT</span>
         <span class="sec-no">01</span>
-        <h2 class="sec-title">自己紹介</h2>
+        <h2 class="sec-title" id="about-title" data-i18n="about_title">自己紹介</h2>
         <span class="sec-sub">ABOUT ME</span>
       </div>
 
@@ -934,93 +160,267 @@
         <div class="card about-side reveal">
           <span class="name-en">Ryota</span>
           <span class="rule" aria-hidden="true"></span>
-          <span class="name-jp">SOFTWARE DEVELOPER</span>
-          <div class="tags">
-            <span>Web アプリ</span><span>DB 設計</span><span>フェス好き</span>
-          </div>
+          <span class="role">SOFTWARE DEVELOPER</span>
+          <ul class="tags">
+            <li data-i18n="tag_web">Web アプリ</li>
+            <li data-i18n="tag_db">DB 設計</li>
+            <li data-i18n="tag_fes">フェス好き</li>
+          </ul>
         </div>
 
         <div class="card about-main reveal">
-          <p>はじめまして、<span class="hl">Ryota</span> です。ソフトウェア開発を学びながら、Web アプリケーションの制作に取り組んでいます。</p>
-          <p>Java（Servlet / JSP）＋ MySQL によるサーバーサイド開発から学び始め、現在は HTML / CSS / JavaScript でのフロントエンド実装にも幅を広げています。</p>
-          <p>原動力はライブ・フェス。<span class="hl">「自分が欲しいものを、自分の手で作る」</span>をテーマに、ライブ参戦を管理するアプリ「LivePlan」を開発しました。</p>
-          <!-- ここに経歴などを自由に書き足してください -->
+          <p data-i18n="about_p1_html">はじめまして、<span class="hl">Ryota</span> です。Web アプリケーションの開発を学びながら、自分で使うためのアプリを作っています。</p>
+          <p data-i18n="about_p2">Python（Flask）や Java（Servlet / JSP）＋ MySQL でサーバーサイドの基礎を学び、現在は Next.js / TypeScript と Supabase を使ったアプリ開発に取り組んでいます。</p>
+          <p data-i18n="about_p3_html">原動力はライブ・フェス。<span class="hl">「自分が欲しいものを、自分の手で作る」</span>をテーマに開発を続けています。</p>
 
-          <div class="timeline">
-            <div class="tl-item reveal">
-              <span class="step">STEP 01</span>
-              <h3>Java と MySQL でサーバーサイド開発を学習</h3>
-              <p>MVC・レイヤー構成・トランザクションなど、Web アプリの基礎を習得</p>
-            </div>
-            <div class="tl-item reveal">
-              <span class="step">STEP 02</span>
-              <h3>LivePlan（Servlet / JSP + MySQL）を開発</h3>
-              <p>ライブ参戦スケジュールを登録・検索・管理する Web アプリを設計から実装まで</p>
-            </div>
-            <div class="tl-item reveal">
-              <span class="step">STEP 03</span>
-              <h3>HTML / CSS / JavaScript でフロントエンドへ</h3>
-              <p>個人開発を続けながら、よりモダンな構成での作り直しにも取り組み中</p>
-            </div>
-          </div>
+          <!-- 年月は content.js ではなくここを直接編集する -->
+          <ol class="timeline" aria-label="これまでの歩み" data-i18n-aria="timeline_label">
+            <li class="tl-item reveal">
+              <time class="step" datetime="2026-02">2026.02</time>
+              <h3 data-i18n="tl1_title">Python / Flask で Web アプリの基礎を学ぶ</h3>
+              <p data-i18n="tl1_text">ルーティング・テンプレート・フォーム処理など、Web アプリが動く仕組みに触れる</p>
+            </li>
+            <li class="tl-item reveal">
+              <time class="step" datetime="2026-05">2026.05</time>
+              <h3 data-i18n="tl2_title">Java（Servlet / JSP）＋ MySQL で LivePlan を開発</h3>
+              <p data-i18n="tl2_text">ログイン付きのライブ予定管理アプリを、MVC 構成で設計から実装まで</p>
+            </li>
+            <li class="tl-item reveal">
+              <time class="step" datetime="2026-07">2026.07</time>
+              <h3 data-i18n="tl3_title">HTML / CSS / JavaScript でこのサイトを制作</h3>
+              <p data-i18n="tl3_text">フレームワークを使わずに書き、GitHub Pages で公開</p>
+            </li>
+            <li class="tl-item reveal">
+              <time class="step" datetime="2026-08">2026.08</time>
+              <h3 data-i18n="tl4_title">Next.js / TypeScript / Supabase で個人開発</h3>
+              <p data-i18n="tl4_text">認証・行レベルのアクセス制御・PWA などを取り入れたアプリを複数制作中</p>
+            </li>
+          </ol>
         </div>
+      </div>
+
+      <div class="card now reveal">
+        <div class="now-head">
+          <span class="label">NOW</span>
+          <h3 data-i18n="now_title">いま取り組んでいること</h3>
+          <span class="now-date" data-i18n="now_date">2026年9月時点</span>
+        </div>
+        <ol class="now-list">
+          <li>
+            <h4 data-i18n="now1_title">Next.js と TypeScript でのアプリ開発</h4>
+            <p data-i18n="now1_text">Server Components / Server Actions を使った構成に慣れる</p>
+          </li>
+          <li>
+            <h4 data-i18n="now2_title">Supabase での認証とデータ設計</h4>
+            <p data-i18n="now2_text">Row Level Security でユーザーごとのデータを守る</p>
+          </li>
+          <li>
+            <h4 data-i18n="now3_title">テストの自動化</h4>
+            <p data-i18n="now3_text">Playwright による E2E チェックを開発の流れに組み込む</p>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- ================= Skills ================= -->
-    <section class="block" id="skills">
+    <section class="block" id="skills" aria-labelledby="skills-title">
       <div class="sec-head reveal">
         <span class="ghost" aria-hidden="true">SKILLS</span>
         <span class="sec-no">02</span>
-        <h2 class="sec-title">スキル</h2>
+        <h2 class="sec-title" id="skills-title" data-i18n="skills_title">スキル</h2>
         <span class="sec-sub">SKILLS</span>
       </div>
+      <p class="sec-lead reveal" data-i18n="skills_lead">自己評価の数字ではなく、実際に何に使ったかで書いています。</p>
 
-      <div class="skill-grid">
-        <div class="card skill reveal" style="--lv: 78%"><span class="lv">78<small>%</small></span><span class="name">Java</span><div class="note">Servlet / JSP / MVC</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 72%"><span class="lv">72<small>%</small></span><span class="name">MySQL</span><div class="note">DB 設計 / SQL</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 74%"><span class="lv">74<small>%</small></span><span class="name">HTML / CSS</span><div class="note">レスポンシブ / アニメーション</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 68%"><span class="lv">68<small>%</small></span><span class="name">JavaScript</span><div class="note">Vanilla JS / PWA</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 60%"><span class="lv">60<small>%</small></span><span class="name">Python</span><div class="note">Flask</div><div class="bar"><i></i></div></div>
-        <div class="card skill reveal" style="--lv: 70%"><span class="lv">70<small>%</small></span><span class="name">Git / GitHub</span><div class="note">バージョン管理 / Pages</div><div class="bar"><i></i></div></div>
+      <div class="skill-groups">
+        <div class="card skill-group reveal">
+          <h3 class="group-title">BACKEND</h3>
+          <ul class="skill-list">
+            <li class="skill-item">
+              <div class="skill-name">Java</div>
+              <div class="skill-tech">Servlet / JSP / MVC</div>
+              <p class="skill-use" data-i18n="sk_java">ログイン付きの Web アプリを MVC 構成で設計・実装</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">MySQL</div>
+              <div class="skill-tech" data-i18n="sk_mysql_tech">テーブル設計 / SQL</div>
+              <p class="skill-use" data-i18n="sk_mysql">ユーザーごとのデータを持つテーブル設計と、JOIN・集計を使った SQL</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">Python</div>
+              <div class="skill-tech">Flask</div>
+              <p class="skill-use" data-i18n="sk_python">ルーティングとテンプレートで小さな Web アプリを作成</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">Supabase</div>
+              <div class="skill-tech">PostgreSQL / Auth / RLS</div>
+              <p class="skill-use" data-i18n="sk_supabase">メール認証と Row Level Security で、自分のデータだけを読み書きできる構成</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card skill-group reveal">
+          <h3 class="group-title">FRONTEND</h3>
+          <ul class="skill-list">
+            <li class="skill-item">
+              <div class="skill-name">HTML / CSS</div>
+              <div class="skill-tech">Responsive / Accessibility</div>
+              <p class="skill-use" data-i18n="sk_html">レスポンシブ対応とアクセシビリティを意識したマークアップ（このサイトも手書き）</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">JavaScript</div>
+              <div class="skill-tech">Vanilla JS / PWA</div>
+              <p class="skill-use" data-i18n="sk_js">フレームワークなしでの UI 実装と、Service Worker によるオフライン対応</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">TypeScript</div>
+              <div class="skill-tech">Type-safe app code</div>
+              <p class="skill-use" data-i18n="sk_ts">型でデータ構造を表し、実行前にミスを見つける</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">React / Next.js</div>
+              <div class="skill-tech">App Router / Server Actions</div>
+              <p class="skill-use" data-i18n="sk_next">サーバーとクライアントの役割を分けたアプリ構成</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">Tailwind CSS</div>
+              <div class="skill-tech">Utility-first CSS</div>
+              <p class="skill-use" data-i18n="sk_tailwind">ユーティリティクラスでの UI 構築</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card skill-group reveal">
+          <h3 class="group-title">TOOLS &amp; INFRA</h3>
+          <ul class="skill-list">
+            <li class="skill-item">
+              <div class="skill-name">Git / GitHub</div>
+              <div class="skill-tech">GitHub Actions</div>
+              <p class="skill-use" data-i18n="sk_git">区切りのよい単位でのコミットと、Actions による自動チェック</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">Vercel</div>
+              <div class="skill-tech">Hosting / Env vars</div>
+              <p class="skill-use" data-i18n="sk_vercel">Next.js アプリのデプロイと環境変数の管理</p>
+            </li>
+            <li class="skill-item">
+              <div class="skill-name">GitHub Pages</div>
+              <div class="skill-tech">Static hosting</div>
+              <p class="skill-use" data-i18n="sk_pages">静的サイトの公開（このサイト）</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <!-- ================= Works ================= -->
-    <section class="block" id="works">
+    <section class="block" id="works" aria-labelledby="works-title">
       <div class="sec-head reveal">
         <span class="ghost" aria-hidden="true">WORKS</span>
         <span class="sec-no">03</span>
-        <h2 class="sec-title">作品</h2>
+        <h2 class="sec-title" id="works-title" data-i18n="works_title">作品</h2>
         <span class="sec-sub">WORKS</span>
       </div>
 
-      <div class="card works-lead reveal">
+      <!-- 作品は assets/js/content.js の works に書くとここに並ぶ -->
+      <div class="works-list" id="worksList" hidden></div>
+
+      <div class="card works-lead reveal" id="worksEmpty">
         <span class="label">IN PROGRESS</span>
-        <h3>作品は現在整理中です</h3>
-        <p>これまで作ってきたものを GitHub 側でまとめ直しています。準備ができ次第、このページにも順次追加していきます。</p>
-        <a class="btn btn-ghost" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener">GitHub のリポジトリを見る</a>
+        <h3 data-i18n="works_empty_title">作品は現在整理中です</h3>
+        <p data-i18n="works_empty_text">これまで作ってきたものを GitHub 側でまとめ直しています。準備ができ次第、このページにも順次追加していきます。</p>
+        <a class="btn btn-ghost" href="https://github.com/ryota-ender?tab=repositories" target="_blank" rel="noopener" data-i18n="works_empty_btn">GitHub のリポジトリを見る</a>
+      </div>
+    </section>
+
+    <!-- ================= Music ================= -->
+    <section class="block" id="music" aria-labelledby="music-title">
+      <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">MUSIC</span>
+        <span class="sec-no">04</span>
+        <h2 class="sec-title" id="music-title" data-i18n="music_title">ライブ</h2>
+        <span class="sec-sub">LIVE MUSIC</span>
+      </div>
+      <p class="sec-lead reveal" data-i18n="music_lead">いちばんの趣味はライブとフェスです。自分で作った記録アプリに残している参戦履歴を集計しました。</p>
+
+      <div class="music-grid">
+        <figure class="card viz reveal">
+          <figcaption>
+            <h3 data-i18n="music_year_title">年別の参戦数</h3>
+            <p class="viz-sub" id="yearNote"></p>
+          </figcaption>
+          <div class="cols" id="yearCols"></div>
+          <div class="col-labels" id="yearLabels" aria-hidden="true"></div>
+        </figure>
+
+        <figure class="card viz reveal">
+          <figcaption>
+            <h3 data-i18n="music_artist_title">よく行くアーティスト</h3>
+            <p class="viz-sub" data-i18n="music_artist_sub">参戦回数の上位 5 組</p>
+          </figcaption>
+          <ol class="bars" id="artistBars"></ol>
+        </figure>
       </div>
 
+      <details class="viz-table reveal">
+        <summary><span class="when-closed" data-i18n="table_open">表で見る</span><span class="when-open" data-i18n="table_close">表を閉じる</span></summary>
+        <div class="viz-tables">
+          <table>
+            <caption data-i18n="music_year_title">年別の参戦数</caption>
+            <thead><tr><th scope="col" data-i18n="th_year">年</th><th scope="col" class="num" data-i18n="th_count">公演数</th></tr></thead>
+            <tbody id="yearTbody"></tbody>
+          </table>
+          <table>
+            <caption data-i18n="music_artist_title">よく行くアーティスト</caption>
+            <thead><tr><th scope="col" data-i18n="th_artist">アーティスト</th><th scope="col" class="num" data-i18n="th_count">公演数</th></tr></thead>
+            <tbody id="artistTbody"></tbody>
+          </table>
+        </div>
+      </details>
+      <p class="viz-source" id="musicSource"></p>
+    </section>
+
+    <!-- ================= Career（content.js にデータがあるときだけ表示） ================= -->
+    <section class="block" id="career" aria-labelledby="career-title" hidden>
+      <div class="sec-head reveal">
+        <span class="ghost" aria-hidden="true">CAREER</span>
+        <span class="sec-no">05</span>
+        <h2 class="sec-title" id="career-title" data-i18n="career_sec">経歴・資格</h2>
+        <span class="sec-sub">CAREER</span>
+      </div>
+      <div class="career-grid">
+        <div class="card career-card reveal" id="careerBox" hidden>
+          <h3 data-i18n="career_title">経歴</h3>
+          <ol class="career-list" id="careerList"></ol>
+        </div>
+        <div class="card career-card reveal" id="certBox" hidden>
+          <h3 data-i18n="certs_title">資格</h3>
+          <ul class="cert-list" id="certList"></ul>
+        </div>
+      </div>
+      <p class="career-resume" id="resumeBox" hidden>
+        <a class="btn btn-ghost" id="resumeLink" href="#career" target="_blank" rel="noopener" data-i18n="resume_btn">職務経歴書（PDF）を見る</a>
+      </p>
     </section>
 
     <!-- ================= Contact ================= -->
-    <section class="block" id="contact">
+    <section class="block" id="contact" aria-labelledby="contact-title">
       <div class="sec-head reveal">
         <span class="ghost" aria-hidden="true">CONTACT</span>
-        <span class="sec-no">04</span>
-        <h2 class="sec-title">連絡先</h2>
+        <span class="sec-no">05</span>
+        <h2 class="sec-title" id="contact-title" data-i18n="contact_title">連絡先</h2>
         <span class="sec-sub">CONTACT</span>
       </div>
 
       <div class="card contact-card reveal">
         <h3>Let's Connect</h3>
-        <p>お仕事・学習仲間・ライブ仲間、なんでもお気軽にどうぞ。</p>
+        <p data-i18n="contact_text">お仕事・学習仲間・ライブ仲間、なんでもお気軽にどうぞ。</p>
         <div class="contact-links">
-          <a class="btn btn-grad" href="mailto:ryota.akaba.0904@gmail.com">メールを送る</a>
-          <button class="btn btn-ghost" id="copyMail" type="button">アドレスをコピー</button>
+          <a class="btn btn-grad" id="mailLink" href="#contact" data-i18n="contact_mail">メールを送る</a>
+          <button class="btn btn-ghost" id="copyMail" type="button" data-i18n="contact_copy">アドレスをコピー</button>
           <a class="btn btn-ghost" href="https://github.com/ryota-ender" target="_blank" rel="noopener">GitHub</a>
         </div>
+        <noscript><p class="mail-fallback">メールアドレスは JavaScript を有効にすると表示されます。GitHub からもご連絡いただけます。</p></noscript>
       </div>
     </section>
 
@@ -1029,311 +429,12 @@
   <footer>
     <div class="container inner">
       <span class="f-logo">Ryota</span>
-      <span>&copy; 2026 Ryota — Built with GitHub Pages</span>
+      <span><span id="updatedWrap" hidden><span data-i18n="updated">最終更新</span> <time id="updated"></time> / </span>&copy; 2026 Ryota</span>
     </div>
   </footer>
 
-  <button class="to-top" id="toTop" aria-label="ページ上部へ戻る">TOP</button>
-  <div class="toast" id="toast" role="status"></div>
-
-  <script>
-    (() => {
-      "use strict";
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const fine = matchMedia("(pointer: fine)").matches;
-      const $ = (s, el = document) => el.querySelector(s);
-      const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-
-      /* ---------- ローディング ---------- */
-      window.addEventListener("load", () => {
-        $("#loader").classList.add("done");
-        try { sessionStorage.setItem("visited", "1"); } catch (_) {}
-      });
-      setTimeout(() => $("#loader").classList.add("done"), 1400); // 保険
-
-      /* ---------- ハンバーガーメニュー ---------- */
-      const menuBtn = $("#menuBtn");
-      const mobileMenu = $("#mobileMenu");
-      function setMenu(open) {
-        menuBtn.classList.toggle("open", open);
-        mobileMenu.classList.toggle("open", open);
-        menuBtn.setAttribute("aria-expanded", String(open));
-        menuBtn.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
-        menuBtn.textContent = open ? "CLOSE" : "MENU";
-      }
-      menuBtn.addEventListener("click", () => setMenu(!mobileMenu.classList.contains("open")));
-      $$("#mobileMenu a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
-      addEventListener("resize", () => { if (innerWidth > 760) setMenu(false); }, { passive: true });
-
-      /* ---------- タイピング ---------- */
-      const phrases = [
-        "ソフトウェア開発を学んでいます",
-        "Java / MySQL / Web フロントエンド",
-        "ライブとフェスが原動力です",
-      ];
-      const typeEl = $("#typeTarget");
-      if (reduced) {
-        typeEl.textContent = phrases[0];
-      } else {
-        let pi = 0, ci = 0, del = false;
-        (function tick() {
-          const p = phrases[pi];
-          ci += del ? -1 : 1;
-          typeEl.textContent = p.slice(0, ci);
-          let wait = del ? 30 : 72;
-          if (!del && ci === p.length) { wait = 1900; del = true; }
-          else if (del && ci === 0) { del = false; pi = (pi + 1) % phrases.length; wait = 380; }
-          setTimeout(tick, wait);
-        })();
-      }
-
-      /* ---------- イコライザー生成 ---------- */
-      const eq = $("#equalizer");
-      for (let i = 0; i < 26; i++) {
-        const bar = document.createElement("span");
-        bar.style.height = "100%";
-        bar.style.animationDuration = (0.5 + Math.random() * 0.9).toFixed(2) + "s";
-        bar.style.animationDelay = (-Math.random()).toFixed(2) + "s";
-        eq.appendChild(bar);
-      }
-
-      /* ---------- マーキー ---------- */
-      const track = $("#marqueeTrack");
-      track.innerHTML += track.innerHTML;
-      const clone = track.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      track.parentElement.appendChild(clone);
-
-      /* ---------- スクロール表示（reveal） ---------- */
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          e.target.classList.add("shown");
-          io.unobserve(e.target);
-        });
-      }, { threshold: 0.14 });
-      $$(".reveal").forEach((el, i) => {
-        el.style.transitionDelay = (i % 5) * 0.07 + "s";
-        io.observe(el);
-      });
-
-      /* ---------- カウントアップ ---------- */
-      const cio = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          cio.unobserve(e.target);
-          const el = e.target;
-          const target = Number(el.dataset.count);
-          const suffix = el.dataset.suffix || "";
-          if (reduced) { el.textContent = target + suffix; return; }
-          const t0 = performance.now();
-          const dur = 1300;
-          (function step(t) {
-            const p = Math.min((t - t0) / dur, 1);
-            const eased = 1 - Math.pow(1 - p, 4);
-            el.textContent = Math.round(target * eased) + suffix;
-            if (p < 1) requestAnimationFrame(step);
-          })(t0);
-        });
-      }, { threshold: 0.6 });
-      $$("[data-count]").forEach((el) => cio.observe(el));
-
-      /* ---------- ナビ（スクロールスパイ） ---------- */
-      const nav = $("#nav");
-      const links = $$(".nav-link");
-      const sections = links.map((a) => $(a.getAttribute("href")));
-      const spy = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          links.forEach((a) =>
-            a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id)
-          );
-        });
-      }, { rootMargin: "-42% 0px -52% 0px" });
-      sections.forEach((s) => s && spy.observe(s));
-
-      /* ---------- スクロール進捗・トップへ ---------- */
-      const progress = $("#progress");
-      const toTop = $("#toTop");
-      addEventListener("scroll", () => {
-        const st = scrollY;
-        nav.classList.toggle("scrolled", st > 10);
-        const max = document.documentElement.scrollHeight - innerHeight;
-        progress.style.width = (max > 0 ? (st / max) * 100 : 0) + "%";
-        toTop.classList.toggle("show", st > 560);
-      }, { passive: true });
-      toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }));
-
-      /* ---------- カスタムカーソル＋グロー（PC のみ・アイドル時停止） ---------- */
-      const glow = $("#cursorGlow");
-      const dot = $("#curDot");
-      const ring = $("#curRing");
-      if (fine && !reduced) {
-        document.body.classList.add("cursor-on");
-        let tx = innerWidth / 2, ty = innerHeight / 2;
-        let gx = tx, gy = ty, rx = tx, ry = ty;
-        let rafId = null, lastMove = 0;
-
-        function loop() {
-          gx += (tx - gx) * 0.09;
-          gy += (ty - gy) * 0.09;
-          rx += (tx - rx) * 0.22;
-          ry += (ty - ry) * 0.22;
-          glow.style.left = gx + "px";
-          glow.style.top = gy + "px";
-          ring.style.left = rx + "px";
-          ring.style.top = ry + "px";
-          if (performance.now() - lastMove > 2600) {
-            glow.style.opacity = 0;
-            rafId = null;
-            return;
-          }
-          rafId = requestAnimationFrame(loop);
-        }
-        addEventListener("pointermove", (e) => {
-          tx = e.clientX; ty = e.clientY;
-          lastMove = performance.now();
-          dot.style.left = tx + "px";
-          dot.style.top = ty + "px";
-          dot.style.opacity = 1;
-          ring.style.opacity = 1;
-          glow.style.opacity = 1;
-          if (rafId === null) rafId = requestAnimationFrame(loop);
-        }, { passive: true });
-        document.addEventListener("pointerleave", () => {
-          dot.style.opacity = 0;
-          ring.style.opacity = 0;
-        });
-        // リンク・ボタンの上でリングを拡大
-        document.addEventListener("pointerover", (e) => {
-          ring.classList.toggle("grow", !!e.target.closest("a, button"));
-        });
-      }
-
-      /* ---------- 星空キャンバス（流れ星つき） ---------- */
-      const canvas = $("#stars");
-      const ctx = canvas.getContext("2d");
-      let stars = [], W = 0, H = 0, mx = 0, my = 0;
-      const DPR = Math.min(devicePixelRatio || 1, 2);
-
-      function initStars() {
-        W = innerWidth; H = innerHeight;
-        canvas.width = W * DPR;
-        canvas.height = H * DPR;
-        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-        const n = Math.min(110, Math.round((W * H) / 16000));
-        stars = Array.from({ length: n }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          z: 0.3 + Math.random() * 0.7,          // 奥行き（視差・速度・明るさに使用）
-          r: 0.4 + Math.random() * 1.1,
-          p: Math.random() * Math.PI * 2,          // またたき位相
-          s: 0.5 + Math.random() * 1.5,            // またたき速度
-        }));
-      }
-
-      let shoot = null, nextShoot = performance.now() + 4000 + Math.random() * 5000;
-
-      function drawStars(t) {
-        ctx.clearRect(0, 0, W, H);
-        const px = (mx - W / 2) / W, py = (my - H / 2) / H;
-        for (const st of stars) {
-          st.y -= 0.018 * st.z;                    // ゆっくり上へ漂う
-          if (st.y < -4) { st.y = H + 4; st.x = Math.random() * W; }
-          const tw = 0.55 + 0.45 * Math.sin(t / 900 * st.s + st.p);
-          ctx.globalAlpha = 0.18 + 0.5 * st.z * tw;
-          ctx.fillStyle = st.z > 0.75 ? "#cfd8ff" : "#ffffff";
-          ctx.beginPath();
-          ctx.arc(st.x - px * 26 * st.z, st.y - py * 18 * st.z, st.r * st.z, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        // 流れ星
-        if (!shoot && t > nextShoot) {
-          shoot = {
-            x: W * (0.15 + Math.random() * 0.7),
-            y: H * (0.05 + Math.random() * 0.25),
-            vx: -(4 + Math.random() * 3),
-            vy: 2 + Math.random() * 1.5,
-            life: 1,
-          };
-        }
-        if (shoot) {
-          shoot.x += shoot.vx * 3;
-          shoot.y += shoot.vy * 3;
-          shoot.life -= 0.022;
-          if (shoot.life <= 0) {
-            shoot = null;
-            nextShoot = t + 5000 + Math.random() * 7000;
-          } else {
-            const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x - shoot.vx * 16, shoot.y - shoot.vy * 16);
-            g.addColorStop(0, `rgba(255,255,255,${0.85 * shoot.life})`);
-            g.addColorStop(1, "rgba(255,255,255,0)");
-            ctx.strokeStyle = g;
-            ctx.lineWidth = 1.6;
-            ctx.globalAlpha = 1;
-            ctx.beginPath();
-            ctx.moveTo(shoot.x, shoot.y);
-            ctx.lineTo(shoot.x - shoot.vx * 16, shoot.y - shoot.vy * 16);
-            ctx.stroke();
-          }
-        }
-        ctx.globalAlpha = 1;
-        if (!reduced) requestAnimationFrame(drawStars);
-      }
-
-      initStars();
-      addEventListener("resize", () => { initStars(); if (reduced) drawStars(0); }, { passive: true });
-      if (reduced) {
-        drawStars(0); // 一度だけ静的に描画
-      } else {
-        addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
-        requestAnimationFrame(drawStars);
-      }
-
-      /* ---------- マグネットボタン ---------- */
-      if (fine && !reduced) {
-        $$(".btn").forEach((b) => {
-          b.addEventListener("pointermove", (e) => {
-            const r = b.getBoundingClientRect();
-            const dx = (e.clientX - r.left - r.width / 2) / r.width;
-            const dy = (e.clientY - r.top - r.height / 2) / r.height;
-            b.style.translate = `${dx * 8}px ${dy * 6}px`;
-          });
-          b.addEventListener("pointerleave", () => { b.style.translate = ""; });
-        });
-      }
-
-      /* ---------- カードの 3D チルト ---------- */
-      if (fine && !reduced) {
-        $$(".skill").forEach((card) => {
-          card.addEventListener("pointermove", (e) => {
-            const r = card.getBoundingClientRect();
-            const rxDeg = ((e.clientY - r.top) / r.height - 0.5) * -5;
-            const ryDeg = ((e.clientX - r.left) / r.width - 0.5) * 5;
-            card.style.transform = `translateY(-6px) perspective(700px) rotateX(${rxDeg}deg) rotateY(${ryDeg}deg)`;
-          });
-          card.addEventListener("pointerleave", () => { card.style.transform = ""; });
-        });
-      }
-
-      /* ---------- メールコピー ---------- */
-      const toast = $("#toast");
-      function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        clearTimeout(showToast._t);
-        showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
-      }
-      $("#copyMail").addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText("ryota.akaba.0904@gmail.com");
-          showToast("メールアドレスをコピーしました");
-        } catch {
-          showToast("コピーできませんでした");
-        }
-      });
-    })();
-  </script>
+  <button class="to-top" id="toTop" type="button" aria-label="ページ上部へ戻る" data-i18n-aria="to_top">TOP</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="viz-tip" id="vizTip" aria-hidden="true"></div>
 </body>
 </html>
