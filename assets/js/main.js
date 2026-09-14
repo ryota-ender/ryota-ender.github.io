@@ -86,20 +86,25 @@
   }
   function onThemeChange() {
     syncPrefs();
-    $('meta[name="theme-color"]').setAttribute("content", themeNow() === "dark" ? "#0c0914" : "#f6f5fa");
-    drawStars();
+    $('meta[name="theme-color"]').setAttribute("content", themeNow() === "dark" ? "#0f0e0d" : "#f3f0e9");
   }
   osDark.addEventListener("change", onThemeChange);
 
   function syncPrefs() {
-    $$("[data-set-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)));
-    $$("[data-set-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === themeNow())));
+    const nextLang = lang === "ja" ? "en" : "ja";
+    $$("[data-toggle-lang]").forEach((b) => {
+      b.textContent = nextLang.toUpperCase();
+      b.setAttribute("aria-label", `${b.textContent} ${t("aria_lang_switch")}`);
+    });
+    const nextTheme = themeNow() === "dark" ? "light" : "dark";
+    $$("[data-toggle-theme]").forEach((b) => {
+      b.textContent = nextTheme.toUpperCase();
+      b.setAttribute("aria-label", `${b.textContent} ${t(nextTheme === "light" ? "aria_theme_light" : "aria_theme_dark")}`);
+    });
   }
   document.addEventListener("click", (e) => {
-    const lb = e.target.closest("[data-set-lang]");
-    if (lb && lb.dataset.setLang !== lang) setLang(lb.dataset.setLang);
-    const tb = e.target.closest("[data-set-theme]");
-    if (tb) setTheme(tb.dataset.setTheme);
+    if (e.target.closest("[data-toggle-lang]")) setLang(lang === "ja" ? "en" : "ja");
+    if (e.target.closest("[data-toggle-theme]")) setTheme(themeNow() === "dark" ? "light" : "dark");
   });
 
   /* ---------- メニュー ---------- */
@@ -172,36 +177,6 @@
     node.style.transitionDelay = (i % 4) * 0.07 + "s";
     io.observe(node);
   }
-
-  /* ---------- 星（静的に 1 回だけ描く） ---------- */
-  const canvas = $("#stars");
-  const ctx = canvas.getContext("2d");
-  const STARS = Array.from({ length: 120 }, () => ({
-    x: Math.random(),
-    y: Math.random(),
-    r: 0.35 + Math.random() * 1.1,
-    a: 0.15 + Math.random() * 0.55,
-  }));
-  function drawStars() {
-    const W = innerWidth, H = innerHeight, DPR = Math.min(devicePixelRatio || 1, 2);
-    canvas.width = W * DPR;
-    canvas.height = H * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    const cs = getComputedStyle(root);
-    ctx.fillStyle = cs.getPropertyValue("--star").trim() || "#fff";
-    const k = parseFloat(cs.getPropertyValue("--star-alpha")) || 1;
-    const n = Math.min(STARS.length, Math.round((W * H) / 15000));
-    for (let i = 0; i < n; i++) {
-      const s = STARS[i];
-      ctx.globalAlpha = s.a * k;
-      ctx.beginPath();
-      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-  let resizeTimer = 0;
-  addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawStars, 150); }, { passive: true });
 
   /* ---------- スクロール連動（ナビ・進捗・トップへ） ---------- */
   const nav = $("#nav");
@@ -277,7 +252,7 @@
     if (w.links && w.links.length) {
       const links = el("div", "work-links");
       w.links.forEach((l, i) => {
-        const a = el("a", "btn " + (i === 0 ? "btn-grad" : "btn-ghost"), pick(l.label));
+        const a = el("a", "btn " + (i === 0 ? "btn-primary" : "btn-ghost"), pick(l.label));
         a.href = l.url;
         if (/^https?:/.test(l.url)) { a.target = "_blank"; a.rel = "noopener"; }
         links.append(a);

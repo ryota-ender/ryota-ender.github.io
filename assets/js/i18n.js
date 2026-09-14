@@ -25,6 +25,9 @@ window.SITE_I18N = {
     case_design: "設計",
     case_highlights: "工夫した点",
     case_learnings: "学び",
+    aria_lang_switch: "（英語に切り替え）",
+    aria_theme_light: "（ライトテーマに切り替え）",
+    aria_theme_dark: "（ダークテーマに切り替え）",
   },
 
   en: {
@@ -47,23 +50,20 @@ window.SITE_I18N = {
     case_design: "Design",
     case_highlights: "Highlights",
     case_learnings: "Learnings",
+    aria_lang_switch: "(switch to Japanese)",
+    aria_theme_light: "(switch to light theme)",
+    aria_theme_dark: "(switch to dark theme)",
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
     /* 共通 */
     skip: "Skip to content",
     nav_label: "Main",
-    lang_label: "Language",
-    theme_label: "Color theme",
     avatar_alt: "Profile image of Ryota",
-    scroll_label: "Scroll down",
     to_top: "Back to top",
     updated: "Last updated",
 
     /* About */
     about_title: "About",
-    tag_web: "Web apps",
-    tag_db: "DB design",
-    tag_fes: "Festival goer",
     about_p1_html: "Hi, I'm <span class=\"hl\">Ryota</span>. I'm learning web application development and building apps I actually want to use.",
     about_p2: "I learned the basics of server-side development with Python (Flask) and Java (Servlet / JSP) + MySQL, and I'm now building apps with Next.js, TypeScript and Supabase.",
     about_p3_html: "Live music and festivals keep me going. My theme is <span class=\"hl\">“build what I want, with my own hands.”</span>",
